@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AxelOS - Daily Driving, Gaming & Hacking Combined</title>
-    <!-- Map external modular style instructions securely -->
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-
     <nav>
         <div class="container nav-flex">
             <div onclick="showHome()" class="logo-text">AxelOS</div>
@@ -26,20 +24,19 @@
 
     <div id="scroll-top-arrow" onclick="window.scrollTo({top:0, behavior:'smooth'})" style="position:fixed; bottom:24px; right:24px; width:44px; height:44px; background:#2563eb; color:white; border-radius:55px; display:none; align-items:center; justify-content:center; font-weight:bold; cursor:pointer; z-index:500; font-size:18px;">&uarr;</div>
 
-    <!-- View 1: Main Platform Landing View -->
     <div id="main-homepage-content">
         <header>
-            <span class="version-tag" id="tag-ver">Loading Version...</span>
+            <span class="version-tag">Introducing AxelOS v2.0</span>
             <h1>The ultimate OS for <br><span>Daily Use, Gaming & Hacking</span>.</h1>
             <p class="hero-p">Why compromise? AxelOS bridges the gap between a polished everyday desktop, extreme gaming performance, and a robust environment for security professionals.</p>
             <div class="hero-btns" id="download">
-                <a href="#" class="main-dl-btn btn btn-lg">Download AxelOS</a>
+                <a id="hero-dl-btn" href="#" class="btn btn-lg">Download AxelOS v2.0</a>
                 <a onclick="showGuide()" class="btn btn-lg btn-alt">Installation Guide</a>
             </div>
             <p class="meta-text">Free & Open Source ? 64-bit ISO (~2.1 GB)</p>
         </header>
 
-        <!-- Dynamic swipe track viewport shell component layout -->
+        <!-- Carousel Dashboard Interface Wrapper -->
         <div class="carousel-shell">
             <button class="arrow-btn arrow-left" onclick="slideCarousel(-1)">&larr;</button>
             <button class="arrow-btn arrow-right" onclick="slideCarousel(1)">&rarr;</button>
@@ -50,9 +47,11 @@
                         <span class="dot" style="background:#f59e0b;"></span>
                         <span class="dot" style="background:#10b981;"></span>
                     </div>
-                    <div class="window-title" id="screen-title">Scanning folder contents...</div>
+                    <div class="window-title" id="screen-title">AxelOS Workspace</div>
                 </div>
-                <div class="slider-viewport" id="slider-track"></div>
+                <div class="slider-viewport" id="slider-track">
+                    <!-- Slides are built instantly by the script template below -->
+                </div>
             </div>
             <div class="indicator-dots" id="dots-container"></div>
         </div>
@@ -79,7 +78,6 @@
                 </div>
             </div>
         </section>
-
         <section class="about" id="about">
             <div class="container">
                 <h2 class="section-title">About AxelOS</h2>
@@ -91,16 +89,16 @@
             <div class="container">
                 <h2 class="section-title">Minimum System Requirements</h2>
                 <div class="specs-list">
-                    <div class="spec-item"><div class="spec-label">Processor (CPU)</div><div class="spec-value" id="spec-cpu">Loading...</div></div>
-                    <div class="spec-item"><div class="spec-label">Memory (RAM)</div><div class="spec-value" id="spec-ram">Loading...</div></div>
-                    <div class="spec-item"><div class="spec-label">Storage Allocation</div><div class="spec-value" id="spec-storage">Loading...</div></div>
-                    <div class="spec-item"><div class="spec-label">Graphics (GPU)</div><div class="spec-value" id="spec-gpu">Loading...</div></div>
+                    <div class="spec-item"><div class="spec-label">Processor (CPU)</div><div class="spec-value">2.0 GHz Dual-Core 64-bit Processor</div></div>
+                    <div class="spec-item"><div class="spec-label">Memory (RAM)</div><div class="spec-value">4 GB System Memory (RAM)</div></div>
+                    <div class="spec-item"><div class="spec-label">Storage Allocation</div><div class="spec-value">25 GB Free Hard Drive Space</div></div>
+                    <div class="spec-item"><div class="spec-label">Graphics (GPU)</div><div class="spec-value">Intel HD / AMD Radeon Graphics (Vulkan)</div></div>
                 </div>
             </div>
         </section>
     </div>
 
-    <!-- View 2: Standalone Installation Guide View Window -->
+    <!-- View 2: Installation Guide Window View -->
     <div id="main-guide-content" class="page-view-container">
         <div class="content-card-wrapper">
             <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
@@ -112,7 +110,7 @@
         </div>
     </div>
 
-    <!-- View 3: Standalone Version Releases View Window -->
+    <!-- View 3: Version Releases Window View -->
     <div id="main-releases-content" class="page-view-container">
         <div class="content-card-wrapper">
             <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
@@ -121,7 +119,10 @@
             <div class="table-wrapper">
                 <table>
                     <thead><tr><th>Version</th><th>Release Date</th><th>Codename</th><th>Key Updates</th><th>Status</th></tr></thead>
-                    <tbody id="history-rows"></tbody>
+                    <tbody>
+                        <tr><td style="font-weight:700;">v2.0 (Latest)</td><td>July 2026</td><td style="font-style:italic;">"Apex"</td><td>Zen-tuned kernel upgrade, overhauled UI, sandboxed shell.</td><td><span class="badge badge-active">Active</span></td></tr>
+                        <tr><td style="font-weight:700;">v1.5</td><td>December 2025</td><td style="font-style:italic;">"Breeze"</td><td>Added Flatpak support, native driver wrapper, fixed Bluetooth bugs.</td><td><span class="badge badge-supported">Supported</span></td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -129,12 +130,88 @@
 
     <footer>
         <div class="container footer-flex">
-            <div class="footer-left"><h4>AxelOS Project</h4><p>Independent community-driven Linux distribution.</p></div>
+            <div class="footer-left"><h4>AxelOS Project</h4><p>Independent community-driven Linux distribution distribution.</p></div>
             <div class="footer-links"><a onclick="showHome()">Home</a><a onclick="showGuide()">Documentation</a><a onclick="showReleases()">Releases</a></div>
         </div>
     </footer>
 
-    <!-- Map external dynamic script engine instructions securely -->
-    <script src="./script.js"></script>
+    <script>
+        // ? LIST YOUR VERIFIED SCREENSHOT IMAGES HERE:
+        const screenshots = [
+            "desktop-workspace.png",
+            "my_gaming_setup.jpg",
+            "cool-hacking-terminal.webp"
+        ];
+        
+        // Your target download path destination links
+        const downloadUrl = "https://github.com";
+
+        function updateCarouselIndicators() {
+            const track = document.getElementById('slider-track');
+            if (!track || track.clientWidth === 0) return;
+            const index = Math.round(track.scrollLeft / track.clientWidth);
+            if (screenshots[index]) document.getElementById('screen-title').innerText = screenshots[index];
+            const dots = document.querySelectorAll('.ind-dot');
+            dots.forEach((dot, i) => { if(i === index) dot.classList.add('active'); else dot.classList.remove('active'); });
+        }
+
+        document.getElementById('slider-track').addEventListener('scroll', updateCarouselIndicators);
+        function slideCarousel(direction) { const track = document.getElementById('slider-track'); track.scrollBy({ left: track.clientWidth * direction, behavior: 'smooth' }); }
+        function jumpToSlide(index) { const track = document.getElementById('slider-track'); track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' }); }
+
+        function hideAllViews() {
+            document.getElementById('main-homepage-content').style.display = 'none';
+            document.getElementById('main-guide-content').style.display = 'none';
+            document.getElementById('main-releases-content').style.display = 'none';
+        }
+        function showGuide() { hideAllViews(); document.getElementById('main-guide-content').style.display = 'block'; window.scrollTo({top:0}); history.pushState(null, "", "#guide"); }
+        function showReleases() { hideAllViews(); document.getElementById('main-releases-content').style.display = 'block'; window.scrollTo({top:0}); history.pushState(null, "", "#releases"); }
+        function showHome(anchor = null) {
+            hideAllViews(); document.getElementById('main-homepage-content').style.display = 'block'; history.pushState(null, "", " ");
+            if(anchor) { setTimeout(() => { const target = document.querySelector(anchor); if(target) target.scrollIntoView({ behavior: 'smooth' }); }, 50); } else { window.scrollTo({top:0}); }
+            setTimeout(updateCarouselIndicators, 100);
+        }
+        
+        function toggleTheme() {
+            const body = document.body; body.classList.toggle('dark-mode');
+            const icon = document.getElementById('theme-icon');
+            if(body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>`;
+            } else {
+                localStorage.setItem('theme', 'light');
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14.5 12a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>`;
+            }
+        }
+        if(localStorage.getItem('theme') === 'dark') toggleTheme();
+
+        window.onscroll = function() {
+            const btn = document.getElementById('scroll-top-arrow');
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) { btn.style.display = "flex"; } else { btn.style.display = "none"; }
+        };
+
+        window.addEventListener("popstate", () => {
+            if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
+        });
+
+        // Instant hard-coded client injection tree pipeline
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('hero-dl-btn').href = downloadUrl;
+            const track = document.getElementById('slider-track');
+            const dotsContainer = document.getElementById('dots-container');
+            
+            track.innerHTML = ''; dotsContainer.innerHTML = '';
+            
+            screenshots.forEach((filename, index) => {
+                track.innerHTML += `<div class="slide-pane"><img src="./webss/${filename}" alt="${filename}"></div>`;
+                let activeClass = index === 0 ? 'active' : '';
+                dotsContainer.innerHTML += `<span class="ind-dot ${activeClass}" onclick="jumpToSlide(${index})"></span>`;
+            });
+            
+            document.getElementById('screen-title').innerText = screenshots[0] || "Gallery";
+            if(window.location.hash === "#guide") showGuide();
+            if(window.location.hash === "#releases") showReleases();
+        });
+    </script>
 </body>
 </html>
