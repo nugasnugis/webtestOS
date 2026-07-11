@@ -48,8 +48,12 @@
         .spec-label { font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; }
         .spec-value { font-size: 16px; color: #0f172a; font-weight: 700; margin-top: 4px; }
 
-        .releases { padding: 80px 0; }
-        .table-wrapper { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow-x: auto; margin-top: 32px; }
+        .page-view-container { max-width: 860px; margin: 40px auto; padding: 0 20px; display: none; }
+        .content-card-wrapper { background: #ffffff; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .back-link { display: inline-block; text-decoration: none; color: #2563eb; font-weight: 600; margin-bottom: 24px; font-size: 15px; cursor: pointer; }
+        .back-link:hover { text-decoration: underline; }
+        
+        .table-wrapper { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow-x: auto; margin-top: 24px; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; }
         th { background: #f8fafc; padding: 20px; font-weight: 600; color: #334155; border-bottom: 1px solid #e2e8f0; }
         td { padding: 20px; border-bottom: 1px solid #e2e8f0; color: #475569; }
@@ -59,16 +63,6 @@
         .badge-supported { background: #dbeafe; color: #1e40af; }
         .badge-legacy { background: #e2e8f0; color: #334155; }
 
-        footer { background: #0f172a; color: #94a3b8; padding: 48px 0; font-size: 14px; }
-        .footer-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 32px; }
-        .footer-left h4 { color: #ffffff; font-size: 18px; margin-bottom: 4px; }
-        .footer-links a { color: #94a3b8; text-decoration: none; margin-left: 24px; transition: color 0.2s; cursor: pointer; }
-        .footer-links a:hover { color: #ffffff; }
-
-        .guide-container { max-width: 760px; margin: 40px auto; padding: 0 20px; display: none; }
-        .guide-box { background: #ffffff; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .back-link { display: inline-block; text-decoration: none; color: #2563eb; font-weight: 600; margin-bottom: 24px; font-size: 15px; cursor: pointer; }
-        .back-link:hover { text-decoration: underline; }
         .step { margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid #f1f5f9; text-align: left; }
         .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .step-num { font-size: 13px; font-weight: 700; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -76,6 +70,12 @@
         .step p { color: #475569; font-size: 16px; text-align: left; }
         .step ul { padding-left: 24px; margin-top: 12px; color: #475569; text-align: left; }
         .step li { margin-bottom: 8px; font-size: 15px; }
+
+        footer { background: #0f172a; color: #94a3b8; padding: 48px 0; font-size: 14px; margin-top: 80px; }
+        .footer-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 32px; }
+        .footer-left h4 { color: #ffffff; font-size: 18px; margin-bottom: 4px; }
+        .footer-links a { color: #94a3b8; text-decoration: none; margin-left: 24px; transition: color 0.2s; cursor: pointer; }
+        .footer-links a:hover { color: #ffffff; }
         @media (max-width: 600px) { .nav-links { display: none; } h1 { font-size: 32px; } }
     </style>
 </head>
@@ -87,12 +87,11 @@
                 <a onclick="showHome('#features')">Features</a>
                 <a onclick="showHome('#about')">About</a>
                 <a onclick="showGuide()">Install Guide</a>
-                <a onclick="showHome('#releases')">Releases</a>
+                <a onclick="showReleases()">Releases</a>
                 <a href="#" class="nav-dl-btn btn">Download</a>
             </div>
         </div>
     </nav>
-
     <div id="main-homepage-content">
         <header>
             <span class="version-tag" id="tag-ver">Loading Version...</span>
@@ -130,10 +129,14 @@
                         <h3>Advanced Pentesting</h3>
                         <p>Equipped with a secure, sandboxed command-line shell environment and loaded with popular open-source network and system auditing suites.</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
         <section class="about" id="about">
             <div class="container">
                 <h2 class="section-title">About AxelOS</h2>
-                <p class="about-p">AxelOS provides a complete system for enthusiasts by combining daily use software, optimized gaming configuration, and security auditing tools into one distribution.</p>
+                <p class="about-p">AxelOS started as a passion project to eliminate the need for computer enthusiasts to setup complicated dual-boots. By bundling standard daily desktop software, fine-tuned gaming runtime configurations, and top-tier security testing platforms natively into one distro, we provide a complete system built by power-users, for power-users.</p>
             </div>
         </section>
 
@@ -148,32 +151,12 @@
                 </div>
             </div>
         </section>
-
-        <section class="releases" id="releases">
-            <div class="container">
-                <h2 class="section-title">Version History</h2>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Version</th>
-                                <th>Release Date</th>
-                                <th>Codename</th>
-                                <th>Key Updates</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-rows"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
     </div>
-
-    <div id="main-guide-content" class="guide-container">
-        <div class="guide-box">
+    <!-- View 2: Standalone Installation Guide View Window -->
+    <div id="main-guide-content" class="page-view-container">
+        <div class="content-card-wrapper">
             <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
-            <h1 style="text-align:left; margin-top:10px;">Deployment & Installation Guide</h1>
+            <h1 style="margin-bottom: 24px;">Deployment & Installation Guide</h1>
             <div class="step">
                 <div class="step-num">Step 1</div>
                 <h3>Download the Platform Image</h3>
@@ -197,6 +180,29 @@
         </div>
     </div>
 
+    <!-- View 3: Standalone Version Releases View Window -->
+    <div id="main-releases-content" class="page-view-container">
+        <div class="content-card-wrapper">
+            <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
+            <h1>AxelOS Version History</h1>
+            <p style="color: #475569; margin-top: 4px;">Track build revisions, changelog patches, and distribution milestones.</p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Release Date</th>
+                            <th>Codename</th>
+                            <th>Key Updates</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-rows"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container footer-flex">
             <div class="footer-left">
@@ -206,20 +212,32 @@
             <div class="footer-links">
                 <a onclick="showHome()">Home</a>
                 <a onclick="showGuide()">Documentation</a>
+                <a onclick="showReleases()">Releases</a>
                 <a href="#">Privacy Policy</a>
             </div>
         </div>
     </footer>
 
     <script>
-        function showGuide() {
+        function hideAllViews() {
             document.getElementById('main-homepage-content').style.display = 'none';
+            document.getElementById('main-guide-content').style.display = 'none';
+            document.getElementById('main-releases-content').style.display = 'none';
+        }
+        function showGuide() {
+            hideAllViews();
             document.getElementById('main-guide-content').style.display = 'block';
             window.scrollTo({top: 0});
             history.pushState(null, "", "#guide");
         }
+        function showReleases() {
+            hideAllViews();
+            document.getElementById('main-releases-content').style.display = 'block';
+            window.scrollTo({top: 0});
+            history.pushState(null, "", "#releases");
+        }
         function showHome(anchor = null) {
-            document.getElementById('main-guide-content').style.display = 'none';
+            hideAllViews();
             document.getElementById('main-homepage-content').style.display = 'block';
             history.pushState(null, "", " ");
             if(anchor) {
@@ -231,18 +249,20 @@
                 window.scrollTo({top: 0});
             }
         }
+        
         window.addEventListener("popstate", () => {
             if(window.location.hash === "#guide") {
-                document.getElementById('main-homepage-content').style.display = 'none';
-                document.getElementById('main-guide-content').style.display = 'block';
+                showGuide();
+            } else if(window.location.hash === "#releases") {
+                showReleases();
             } else {
-                document.getElementById('main-guide-content').style.display = 'none';
-                document.getElementById('main-homepage-content').style.display = 'block';
+                showHome();
             }
         });
+        
         if(window.location.hash === "#guide") showGuide();
+        if(window.location.hash === "#releases") showReleases();
 
-        // Fetches dynamic content for specs, versions, and download links
         fetch('./config.json')
             .then(res => res.json())
             .then(data => {
@@ -266,7 +286,7 @@
                     if (item.status === 'supported') badgeClass = 'badge-supported';
                     container.innerHTML += `<tr><td style="font-weight:700; color:#0f172a;">${item.version}</td><td>${item.date}</td><td style="font-style: italic;">"${item.codename}"</td><td>${item.updates}</td><td><span class="badge ${badgeClass}">${item.status}</span></td></tr>`;
                 });
-            }).catch(err => console.error("JSON mapping error:", err));
+            }).catch(err => console.error("JSON Pipeline error:", err));
     </script>
 </body>
 </html>
