@@ -1,9 +1,15 @@
 {
   "latest_version": "v2.0",
   "download_url": "https://github.com",
+  "requirements": {
+    "cpu": "2.0 GHz Dual-Core 64-bit Processor",
+    "ram": "4 GB System Memory (RAM)",
+    "storage": "25 GB Free Hard Drive Space",
+    "gpu": "Intel HD / AMD Radeon Graphics with Vulkan Support"
+  },
   "history": [
     {
-      "version": "v7.0 (Latest)",
+      "version": "v2.0 (Latest)",
       "date": "July 2026",
       "codename": "Apex",
       "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
@@ -15,13 +21,6 @@
       "codename": "Breeze",
       "updates": "Added Flatpak support, native GPU driver installer wrapper, fixed Bluetooth bugs.",
       "status": "supported"
-    },
-    {
-      "version": "v1.0",
-      "date": "May 2025",
-      "codename": "Genesis",
-      "updates": "Initial official deployment of AxelOS Core repository packages.",
-      "status": "legacy"
     }
   ]
 }
