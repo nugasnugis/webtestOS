@@ -1,4 +1,4 @@
-// ? LIST YOUR VERIFIED SCREENSHOT IMAGES HERE
+// ? SCREENSHOT IMAGE ARRAY LIST
 const screenshots = [
     "daily-desktop-interface.png",
     "gaming_proton_dashboard.jpg",
@@ -9,23 +9,21 @@ const downloadUrl = "https://github.com";
 let currentIndex = 0;
 let autoSwipeTimer;
 
-// ? TITLE TEXT CLEANER: Strips out extensions (.png, .jpg) and dashes
+// Dynamic Header Text Cleaner
 function cleanImageTitle(filename) {
-    let clean = filename.replace(/\.[^/.]+$/, ""); 
-    clean = clean.replace(/[-_]/g, " "); 
-    return clean;
+    return filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
 }
 
 function updateCarouselIndicators() {
     const track = document.getElementById('slider-track');
     if (!track || track.clientWidth === 0) return;
     currentIndex = Math.round(track.scrollLeft / track.clientWidth);
-    
     if (screenshots[currentIndex]) {
         document.getElementById('screen-title').innerText = cleanImageTitle(screenshots[currentIndex]);
     }
-    const dots = document.querySelectorAll('.ind-dot');
-    dots.forEach((dot, i) => { if(i === currentIndex) dot.classList.add('active'); else dot.classList.remove('active'); });
+    document.querySelectorAll('.ind-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentIndex);
+    });
 }
 
 if (document.getElementById('slider-track')) {
@@ -33,7 +31,6 @@ if (document.getElementById('slider-track')) {
 }
 
 function slideCarousel(direction) {
-    const track = document.getElementById('slider-track');
     currentIndex += direction;
     if (currentIndex >= screenshots.length) currentIndex = 0;
     else if (currentIndex < 0) currentIndex = screenshots.length - 1;
@@ -43,8 +40,7 @@ function slideCarousel(direction) {
 
 function jumpToSlide(index) { 
     const track = document.getElementById('slider-track');
-    if (!track) return;
-    track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' }); 
+    if (track) track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' }); 
     currentIndex = index;
 }
 
@@ -56,7 +52,7 @@ if (document.getElementById('slider-track')) {
     document.getElementById('slider-track').addEventListener('touchend', resetAutoSwipeTimer);
 }
 
-// Smooth Accordion FAQ Logic
+// Smooth Accordion FAQ Dropdowns
 function toggleFaq(button) {
     const panel = button.nextElementSibling;
     const span = button.querySelector('span');
