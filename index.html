@@ -4,80 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AxelOS - Daily Driving, Gaming & Hacking Combined</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.2s, border-color 0.2s; }
-        html { scroll-behavior: smooth; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; color: #0f172a; line-height: 1.5; }
-        
-        /* Dark Mode Theme Configurations */
-        body.dark-mode { background-color: #0f172a; color: #f8fafc; }
-        body.dark-mode nav { background: #1e293b; border-color: #334155; }
-        body.dark-mode .nav-links a { color: #94a3b8; }
-        body.dark-mode .nav-links a:hover { color: #38bdf8; }
-        body.dark-mode .card { background: #1e293b; border-color: #334155; }
-        body.dark-mode .card h3 { color: #ffffff; }
-        body.dark-mode .card p { color: #94a3b8; }
-        body.dark-mode .about { background: #1e293b; border-color: #334155; }
-        body.dark-mode .about-p { color: #94a3b8; }
-        body.dark-mode .specs-section { background: #0f172a; border-color: #334155; }
-        body.dark-mode .spec-item { background: #1e293b; border-color: #334155; }
-        body.dark-mode .spec-value { color: #ffffff; }
-        body.dark-mode .content-card-wrapper { background: #1e293b; border-color: #334155; }
-        body.dark-mode h1, body.dark-mode .section-title { color: #ffffff; }
-        body.dark-mode .hero-p { color: #94a3b8; }
-        body.dark-mode th { background: #1e293b; border-color: #334155; color: #cbd5e1; }
-        body.dark-mode td { border-color: #334155; color: #cbd5e1; }
-
-        nav { background: #ffffff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        .nav-flex { display: flex; justify-content: space-between; items: center; padding: 16px 0; }
-        .logo-group { display: flex; align-items: center; gap: 12px; }
-        .logo-text { font-size: 20px; font-weight: 800; color: #ffffff; background: #2563eb; padding: 6px 14px; border-radius: 8px; letter-spacing: 0.5px; text-decoration: none; cursor: pointer; }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { margin-left: 24px; text-decoration: none; color: #475569; font-weight: 500; transition: color 0.2s; cursor: pointer; }
-        .nav-links a:hover { color: #2563eb; }
-        .btn { background: #2563eb; color: #ffffff; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block; }
-        .btn:hover { background: #1d4ed8; }
-        
-        /* Mode Toggle Styled Button Switcher */
-        .theme-toggle { background: transparent; border: none; cursor: pointer; color: #475569; margin-left: 24px; display: flex; align-items: center; }
-        body.dark-mode .theme-toggle { color: #f59e0b; }
-        
-        header { text-align: center; padding: 80px 20px 40px 20px; max-width: 800px; margin: 0 auto; }
-        .version-tag { background: #dbeafe; color: #1e40af; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 9999px; text-transform: uppercase; display: inline-block; }
-        h1 { font-size: 48px; font-weight: 800; color: #0f172a; margin-top: 24px; letter-spacing: -1px; line-height: 1.2; }
-        h1 span { color: #2563eb; }
-        .hero-p { font-size: 18px; color: #475569; margin-top: 24px; line-height: 1.6; }
-        .hero-btns { margin-top: 40px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-        .btn-lg { padding: 14px 28px; font-size: 16px; font-weight: 600; border-radius: 12px; }
-        .btn-alt { background: #ffffff; color: #334155; border: 1px solid #cbd5e1; cursor: pointer; }
-        .btn-alt:hover { background: #f8fafc; }
-        .meta-text { font-size: 14px; color: #64748b; margin-top: 16px; }
-
-        /* Screenshot Deck Container Shell mockup */
-        .carousel-shell { max-width: 900px; margin: 40px auto 80px auto; padding: 0 20px; }
-        .window-mockup { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        body.dark-mode .window-mockup { background: #1e293b; border-color: #334155; }
-        .window-bar { background: #f1f5f9; padding: 12px; display: flex; gap: 6px; border-b: 1px solid #cbd5e1; }
-        body.dark-mode .window-bar { background: #0f172a; border-color: #334155; }
-        .dot { width: 12px; height: 12px; border-radius: 55px; display: inline-block; }
-        .img-viewport { background: #e2e8f0; height: 400px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #94a3b8; }
-        body.dark-mode .img-viewport { background: #334155; color: #475569; }
-
-        .features { background: #ffffff; padding: 80px 0; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
-        .section-title { text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 48px; letter-spacing: -0.5px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
-        .card { background: #f8fafc; padding: 32px; border-radius: 16px; border: 1px solid #f1f5f9; }
-        .icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
-        .icon-blue { background: #dbeafe; color: #2563eb; }
-        .icon-emerald { background: #d1fae5; color: #059669; }
-        .icon-purple { background: #f3e8ff; color: #7c3aed; }
-        .icon-box svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
-        .card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
-        .card p { color: #475569; font-size: 15px; line-height: 1.6; }
-    </style>
+    <!-- Map external modular style instructions securely -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+
     <nav>
         <div class="container nav-flex">
             <div onclick="showHome()" class="logo-text">AxelOS</div>
@@ -89,14 +20,13 @@
                 <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
                     <svg style="width:20px; height:20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="theme-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14.5 12a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path></svg>
                 </button>
-                <a href="#" class="nav-dl-btn btn" style="margin-left:24px;">Download</a>
             </div>
         </div>
     </nav>
 
-    <!-- Scroll tracking Top Button Element link -->
     <div id="scroll-top-arrow" onclick="window.scrollTo({top:0, behavior:'smooth'})" style="position:fixed; bottom:24px; right:24px; width:44px; height:44px; background:#2563eb; color:white; border-radius:55px; display:none; align-items:center; justify-content:center; font-weight:bold; cursor:pointer; z-index:500; font-size:18px;">&uarr;</div>
 
+    <!-- View 1: Main Platform Landing View -->
     <div id="main-homepage-content">
         <header>
             <span class="version-tag" id="tag-ver">Loading Version...</span>
@@ -109,18 +39,22 @@
             <p class="meta-text">Free & Open Source ? 64-bit ISO (~2.1 GB)</p>
         </header>
 
-        <!-- OS Window Image Placeholder Component Deck Layout -->
+        <!-- Dynamic swipe track viewport shell component layout -->
         <div class="carousel-shell">
+            <button class="arrow-btn arrow-left" onclick="slideCarousel(-1)">&larr;</button>
+            <button class="arrow-btn arrow-right" onclick="slideCarousel(1)">&rarr;</button>
             <div class="window-mockup">
                 <div class="window-bar">
-                    <span class="dot" style="background:#ef4444;"></span>
-                    <span class="dot" style="background:#f59e0b;"></span>
-                    <span class="dot" style="background:#10b981;"></span>
+                    <div class="dot-group">
+                        <span class="dot" style="background:#ef4444;"></span>
+                        <span class="dot" style="background:#f59e0b;"></span>
+                        <span class="dot" style="background:#10b981;"></span>
+                    </div>
+                    <div class="window-title" id="screen-title">Scanning folder contents...</div>
                 </div>
-                <div class="img-viewport" id="carousel-canvas">
-                    [ Placeholder: Place your desktop screenshot inside your repository root folder ]
-                </div>
+                <div class="slider-viewport" id="slider-track"></div>
             </div>
+            <div class="indicator-dots" id="dots-container"></div>
         </div>
 
         <section class="features" id="features">
@@ -145,15 +79,6 @@
                 </div>
             </div>
         </section>
-        <style>
-            .about { background: #f1f5f9; padding: 80px 0; border-bottom: 1px solid #e2e8f0; }
-            .about-p { max-width: 700px; margin: 0 auto; text-align: center; font-size: 18px; color: #475569; line-height: 1.7; }
-            .specs-section { background: #ffffff; padding: 80px 0; border-bottom: 1px solid #e2e8f0; }
-            .specs-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 32px; }
-            .spec-item { padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
-            .spec-label { font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase; }
-            .spec-value { font-size: 16px; color: #0f172a; font-weight: 700; margin-top: 4px; }
-        </style>
 
         <section class="about" id="about">
             <div class="container">
@@ -204,68 +129,12 @@
 
     <footer>
         <div class="container footer-flex">
-            <div class="footer-left"><h4>AxelOS Project</h4><p>Independent community-driven Linux distribution distribution.</p></div>
+            <div class="footer-left"><h4>AxelOS Project</h4><p>Independent community-driven Linux distribution.</p></div>
             <div class="footer-links"><a onclick="showHome()">Home</a><a onclick="showGuide()">Documentation</a><a onclick="showReleases()">Releases</a></div>
         </div>
     </footer>
 
-    <script>
-        function hideAllViews() {
-            document.getElementById('main-homepage-content').style.display = 'none';
-            document.getElementById('main-guide-content').style.display = 'none';
-            document.getElementById('main-releases-content').style.display = 'none';
-        }
-        function showGuide() { hideAllViews(); document.getElementById('main-guide-content').style.display = 'block'; window.scrollTo({top:0}); history.pushState(null, "", "#guide"); }
-        function showReleases() { hideAllViews(); document.getElementById('main-releases-content').style.display = 'block'; window.scrollTo({top:0}); history.pushState(null, "", "#releases"); }
-        function showHome(anchor = null) {
-            hideAllViews(); document.getElementById('main-homepage-content').style.display = 'block'; history.pushState(null, "", " ");
-            if(anchor) { setTimeout(() => { const target = document.querySelector(anchor); if(target) target.scrollIntoView({ behavior: 'smooth' }); }, 50); } else { window.scrollTo({top:0}); }
-        }
-        
-        // Mode Switch Logic
-        function toggleTheme() {
-            const body = document.body;
-            body.classList.toggle('dark-mode');
-            const icon = document.getElementById('theme-icon');
-            if(body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>`;
-            } else {
-                localStorage.setItem('theme', 'light');
-                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14.5 12a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>`;
-            }
-        }
-        if(localStorage.getItem('theme') === 'dark') toggleTheme();
-
-        // Scroll Tracking Engine
-        window.onscroll = function() {
-            const btn = document.getElementById('scroll-top-arrow');
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) { btn.style.display = "flex"; } else { btn.style.display = "none"; }
-        };
-
-        window.addEventListener("popstate", () => {
-            if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
-        });
-        if(window.location.hash === "#guide") showGuide();
-        if(window.location.hash === "#releases") showReleases();
-
-        fetch('./config.json')
-            .then(res => res.json())
-            .then(data => {
-                document.querySelectorAll('.main-dl-btn').forEach(b => { b.href = data.download_url; b.innerText = `Download AxelOS ${data.latest_version}`; });
-                document.querySelectorAll('.nav-dl-btn').forEach(b => b.href = data.download_url);
-                document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
-                document.getElementById('spec-cpu').innerText = data.requirements.cpu;
-                document.getElementById('spec-ram').innerText = data.requirements.ram;
-                document.getElementById('spec-storage').innerText = data.requirements.storage;
-                document.getElementById('spec-gpu').innerText = data.requirements.gpu;
-                const container = document.getElementById('history-rows');
-                container.innerHTML = '';
-                data.history.forEach(item => {
-                    let badgeClass = 'badge-legacy'; if (item.status === 'active') badgeClass = 'badge-active'; if (item.status === 'supported') badgeClass = 'badge-supported';
-                    container.innerHTML += `<tr><td style="font-weight:700;">${item.version}</td><td>${item.date}</td><td style="font-style:italic;">"${item.codename}"</td><td>${item.updates}</td><td><span class="badge ${badgeClass}">${item.status}</span></td></tr>`;
-                });
-            }).catch(err => console.error("JSON Pipeline mapping error:", err));
-    </script>
+    <!-- Map external dynamic script engine instructions securely -->
+    <script src="./script.js"></script>
 </body>
 </html>
