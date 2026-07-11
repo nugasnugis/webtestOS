@@ -1,22 +1,15 @@
-// ? SCREENSHOT IMAGE ARRAY LIST
-const screenshots = [
-    "daily-desktop-interface.png",
-    "gaming_proton_dashboard.jpg",
-    "pentesting-terminal-shell.webp"
-];
-
-const downloadUrl = "https://github.com";
+let screenshots = [];
+let slideTitles = [];
 let currentIndex = 0;
 let autoSwipeTimer;
 
-// Dynamic Header Text Cleaner
 function cleanImageTitle(filename) {
     return filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
 }
 
 function updateCarouselIndicators() {
     const track = document.getElementById('slider-track');
-    if (!track || track.clientWidth === 0) return;
+    if (!track || track.clientWidth === 0 || screenshots.length === 0) return;
     currentIndex = Math.round(track.scrollLeft / track.clientWidth);
     if (screenshots[currentIndex]) {
         document.getElementById('screen-title').innerText = cleanImageTitle(screenshots[currentIndex]);
@@ -31,6 +24,7 @@ if (document.getElementById('slider-track')) {
 }
 
 function slideCarousel(direction) {
+    if (screenshots.length === 0) return;
     currentIndex += direction;
     if (currentIndex >= screenshots.length) currentIndex = 0;
     else if (currentIndex < 0) currentIndex = screenshots.length - 1;
@@ -52,18 +46,13 @@ if (document.getElementById('slider-track')) {
     document.getElementById('slider-track').addEventListener('touchend', resetAutoSwipeTimer);
 }
 
-// Smooth Accordion FAQ Dropdowns
 function toggleFaq(button) {
     const panel = button.nextElementSibling;
     const span = button.querySelector('span');
     if (panel.style.maxHeight && panel.style.maxHeight !== '0px') {
-        panel.style.maxHeight = '0px';
-        panel.style.paddingBottom = '0px';
-        span.innerText = '+';
+        panel.style.maxHeight = '0px'; panel.style.paddingBottom = '0px'; span.innerText = '+';
     } else {
-        panel.style.maxHeight = panel.scrollHeight + "px";
-        panel.style.paddingBottom = '15px';
-        span.innerText = '?';
+        panel.style.maxHeight = panel.scrollHeight + "px"; panel.style.paddingBottom = '15px'; span.innerText = '?';
     }
 }
 
@@ -102,25 +91,40 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    const dlBtn = document.getElementById('hero-dl-btn');
-    if(dlBtn) dlBtn.href = downloadUrl;
-    
-    const track = document.getElementById('slider-track');
-    const dotsContainer = document.getElementById('dots-container');
-    if(track && dotsContainer) {
-        track.innerHTML = ''; dotsContainer.innerHTML = '';
-        screenshots.forEach((filename, index) => {
-            track.innerHTML += `<div class="slide-pane"><img src="./webss/${filename}" alt="${filename}"></div>`;
-            let activeClass = index === 0 ? 'active' : '';
-            dotsContainer.innerHTML += `<span class="ind-dot ${activeClass}" onclick="jumpToSlide(${index}); resetAutoSwipeTimer();"></span>`;
+// Fixed absolute direct routing destination path map parameters
+fetch('config.json')
+    .then(res => res.json())
+    .then(data => {
+        document.querySelectorAll('.main-dl-btn').forEach(b => { b.href = data.download_url; b.innerText = `Download AxelOS ${data.latest_version}`; });
+        document.querySelectorAll('.nav-dl-btn').forEach(b => b.href = data.download_url);
+        document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
+        
+        document.getElementById('spec-cpu').innerText = data.requirements.cpu;
+        document.getElementById('spec-ram').innerText = data.requirements.ram;
+        document.getElementById('spec-storage').innerText = data.requirements.storage;
+        document.getElementById('spec-gpu').innerText = data.requirements.gpu;
+
+        screenshots = data.webss || [];
+        const track = document.getElementById('slider-track');
+        const dotsContainer = document.getElementById('dots-container');
+        
+        if(track && dotsContainer && screenshots.length > 0) {
+            track.innerHTML = ''; dotsContainer.innerHTML = '';
+            screenshots.forEach((filename, index) => {
+                track.innerHTML += `<div class="slide-pane"><img src="webss/${filename}" alt="${filename}"></div>`;
+                let activeClass = index === 0 ? 'active' : '';
+                dotsContainer.innerHTML += `<span class="ind-dot ${activeClass}" onclick="jumpToSlide(${index}); resetAutoSwipeTimer();"></span>`;
+            });
+            document.getElementById('screen-title').innerText = cleanImageTitle(screenshots[0]);
+        }
+
+        const container = document.getElementById('history-rows');
+        if (!container) return;
+        container.innerHTML = '';
+        data.history.forEach(item => {
+            let badgeClass = 'badge-legacy'; if (item.status === 'active') badgeClass = 'badge-active'; if (item.status === 'supported') badgeClass = 'badge-supported';
+            container.innerHTML += `<tr><td style="font-weight:700; color:inherit;">${item.version}</td><td>${item.date}</td><td style="font-style:italic;">"${item.codename}"</td><td>${item.updates}</td><td><span class="badge ${badgeClass}">${item.status}</span></td></tr>`;
         });
-    }
-    
-    const titleEl = document.getElementById('screen-title');
-    if(titleEl && screenshots[0]) titleEl.innerText = cleanImageTitle(screenshots[0]);
-    
-    if(window.location.hash === "#guide") showGuide();
-    if(window.location.hash === "#releases") showReleases();
-    startAutoSwipe();
-});
+        
+        startAutoSwipe();
+    }).catch(err => console.error("JSON fetch configuration loading failure loop:", err));
