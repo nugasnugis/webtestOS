@@ -3,6 +3,7 @@ let slideTitles = [];
 let currentIndex = 0;
 let autoSwipeTimer;
 
+// Dynamic Header Text Cleaner: Strips out extensions and converts dashes/underscores to spaces
 function cleanImageTitle(filename) {
     return filename.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
 }
@@ -46,6 +47,7 @@ if (document.getElementById('slider-track')) {
     document.getElementById('slider-track').addEventListener('touchend', resetAutoSwipeTimer);
 }
 
+// Interactive FAQ Accordion Trigger
 function toggleFaq(button) {
     const panel = button.nextElementSibling;
     const span = button.querySelector('span');
@@ -56,6 +58,7 @@ function toggleFaq(button) {
     }
 }
 
+// Single Page Views Controller Layout
 function hideAllViews() {
     document.getElementById('main-homepage-content').style.display = 'none';
     document.getElementById('main-guide-content').style.display = 'none';
@@ -69,6 +72,7 @@ function showHome(anchor = null) {
     setTimeout(updateCarouselIndicators, 100);
 }
 
+// Native Dark Mode Memory State Configuration Tracker
 function toggleTheme() {
     const body = document.body; body.classList.toggle('dark-mode');
     const icon = document.getElementById('theme-icon');
@@ -91,19 +95,27 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
-// Fixed absolute direct routing destination path map parameters
+// Primary JSON configuration data pipeline connection
 fetch('config.json')
     .then(res => res.json())
     .then(data => {
-        document.querySelectorAll('.main-dl-btn').forEach(b => { b.href = data.download_url; b.innerText = `Download AxelOS ${data.latest_version}`; });
-        document.querySelectorAll('.nav-dl-btn').forEach(b => b.href = data.download_url);
+        // Automatically inject the download url value from your config file to all components
+        document.querySelectorAll('.main-dl-btn, #hero-dl-btn').forEach(b => { 
+            b.href = data.download_url; 
+            b.innerText = `Download AxelOS ${data.latest_version}`; 
+        });
+        document.querySelectorAll('.nav-dl-btn').forEach(b => {
+            b.href = data.download_url;
+        });
         document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
         
+        // Requirements card parsing maps
         document.getElementById('spec-cpu').innerText = data.requirements.cpu;
         document.getElementById('spec-ram').innerText = data.requirements.ram;
         document.getElementById('spec-storage').innerText = data.requirements.storage;
         document.getElementById('spec-gpu').innerText = data.requirements.gpu;
 
+        // Image slider carousel mapping configuration trees
         screenshots = data.webss || [];
         const track = document.getElementById('slider-track');
         const dotsContainer = document.getElementById('dots-container');
@@ -118,6 +130,7 @@ fetch('config.json')
             document.getElementById('screen-title').innerText = cleanImageTitle(screenshots[0]);
         }
 
+        // Version history changelog table updates
         const container = document.getElementById('history-rows');
         if (!container) return;
         container.innerHTML = '';
