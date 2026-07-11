@@ -1,0 +1,27 @@
+{
+  "latest_version": "v2.0",
+  "download_url": "https://github.com",
+  "history": [
+    {
+      "version": "v2.0 (Latest)",
+      "date": "July 2026",
+      "codename": "Apex",
+      "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
+      "status": "active"
+    },
+    {
+      "version": "v1.5",
+      "date": "December 2025",
+      "codename": "Breeze",
+      "updates": "Added Flatpak support, native GPU driver installer wrapper, fixed Bluetooth bugs.",
+      "status": "supported"
+    },
+    {
+      "version": "v1.0",
+      "date": "May 2025",
+      "codename": "Genesis",
+      "updates": "Initial official deployment of AxelOS Core repository packages.",
+      "status": "legacy"
+    }
+  ]
+}
