@@ -1,6 +1,12 @@
 {
-  "latest_version": "v1.0",
-  "download_url": "https://githuaab.com",
+  "latest_version": "v2.0",
+  "download_url": "https://github.com",
+  "webss": [
+    "desktop-workspace.png",
+    "my_gaming_setup.jpg",
+    "cool-hacking-terminal.webp",
+    "default-wallpaper.png"
+  ],
   "requirements": {
     "cpu": "2.0 GHz Dual-Core 64-bit Processor",
     "ram": "4 GB System Memory (RAM)",
@@ -14,13 +20,6 @@
       "codename": "Apex",
       "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
       "status": "active"
-    },
-    {
-      "version": "v1.5",
-      "date": "December 2025",
-      "codename": "Breeze",
-      "updates": "Added Flatpak support, native GPU driver installer wrapper, fixed Bluetooth bugs.",
-      "status": "supported"
     }
   ]
 }
