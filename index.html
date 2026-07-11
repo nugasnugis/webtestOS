@@ -135,29 +135,82 @@
         </div>
     </footer>
 
-    <script>
+        <script>
         // ? LIST YOUR VERIFIED SCREENSHOT IMAGES HERE:
         const screenshots = [
             "desktop-workspace.png",
             "my_gaming_setup.jpg",
-            "cool-hacking-terminal.webp"
+            "cool-hacking-terminal.webp",
+            "default-wallpaper.png"
         ];
         
-        // Your target download path destination links
         const downloadUrl = "https://github.com";
+        let currentIndex = 0;
+        let autoSwipeTimer;
 
         function updateCarouselIndicators() {
             const track = document.getElementById('slider-track');
             if (!track || track.clientWidth === 0) return;
-            const index = Math.round(track.scrollLeft / track.clientWidth);
-            if (screenshots[index]) document.getElementById('screen-title').innerText = screenshots[index];
+            
+            // Calculate the active index position accurately
+            currentIndex = Math.round(track.scrollLeft / track.clientWidth);
+            
+            if (screenshots[currentIndex]) {
+                document.getElementById('screen-title').innerText = screenshots[currentIndex];
+            }
+            
             const dots = document.querySelectorAll('.ind-dot');
-            dots.forEach((dot, i) => { if(i === index) dot.classList.add('active'); else dot.classList.remove('active'); });
+            dots.forEach((dot, i) => { 
+                if(i === currentIndex) dot.classList.add('active'); else dot.classList.remove('active'); 
+            });
         }
 
+        // Listens for scroll steps to sync indicator titles and dots
         document.getElementById('slider-track').addEventListener('scroll', updateCarouselIndicators);
-        function slideCarousel(direction) { const track = document.getElementById('slider-track'); track.scrollBy({ left: track.clientWidth * direction, behavior: 'smooth' }); }
-        function jumpToSlide(index) { const track = document.getElementById('slider-track'); track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' }); }
+
+        // Infinite loop positioning controller
+        function slideCarousel(direction) {
+            const track = document.getElementById('slider-track');
+            const totalSlides = screenshots.length;
+            
+            // Calculate next slide location target
+            currentIndex += direction;
+            
+            // Infinite Logic: If it goes past the end, jump to start. If it goes past start, jump to end.
+            if (currentIndex >= totalSlides) {
+                currentIndex = 0;
+            } else if (currentIndex < 0) {
+                currentIndex = totalSlides - 1;
+            }
+            
+            jumpToSlide(currentIndex);
+            resetAutoSwipeTimer(); // Pause autoplay temporarily on button click
+        }
+
+        function jumpToSlide(index) { 
+            const track = document.getElementById('slider-track');
+            if (!track) return;
+            track.scrollTo({ left: track.clientWidth * index, behavior: 'smooth' }); 
+            currentIndex = index;
+        }
+
+        // Automated sliding interval loop (4000ms = 4 seconds)
+        function startAutoSwipe() {
+            autoSwipeTimer = setInterval(() => {
+                slideCarousel(1);
+            }, 4000);
+        }
+
+        function resetAutoSwipeTimer() {
+            clearInterval(autoSwipeTimer);
+            startAutoSwipe();
+        }
+
+        // Pause autoplay if a user physically touches or drags the track slider
+        if (document.getElementById('slider-track')) {
+            document.getElementById('slider-track').addEventListener('touchstart', () => clearInterval(autoSwipeTimer));
+            document.getElementById('slider-track').addEventListener('touchend', resetAutoSwipeTimer);
+        }
 
         function hideAllViews() {
             document.getElementById('main-homepage-content').style.display = 'none';
@@ -194,7 +247,7 @@
             if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
         });
 
-        // Instant hard-coded client injection tree pipeline
+        // Initialize Carousel building mechanics natively on page load
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('hero-dl-btn').href = downloadUrl;
             const track = document.getElementById('slider-track');
@@ -205,12 +258,15 @@
             screenshots.forEach((filename, index) => {
                 track.innerHTML += `<div class="slide-pane"><img src="./webss/${filename}" alt="${filename}"></div>`;
                 let activeClass = index === 0 ? 'active' : '';
-                dotsContainer.innerHTML += `<span class="ind-dot ${activeClass}" onclick="jumpToSlide(${index})"></span>`;
+                dotsContainer.innerHTML += `<span class="ind-dot ${activeClass}" onclick="jumpToSlide(${index}); resetAutoSwipeTimer();"></span>`;
             });
             
             document.getElementById('screen-title').innerText = screenshots[0] || "Gallery";
             if(window.location.hash === "#guide") showGuide();
             if(window.location.hash === "#releases") showReleases();
+            
+            // Kick off the autoplay engine loop loop
+            startAutoSwipe();
         });
     </script>
 </body>
