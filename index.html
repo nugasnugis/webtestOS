@@ -10,7 +10,7 @@
         nav { background: #ffffff; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         .nav-flex { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
-        .logo-text { font-size: 20px; font-weight: 700; color: #1e293b; text-decoration: none; }
+        .logo-text { font-size: 20px; font-weight: 800; color: #ffffff; background: #2563eb; padding: 6px 14px; border-radius: 8px; letter-spacing: 0.5px; text-decoration: none; }
         .nav-links a { margin-left: 24px; text-decoration: none; color: #475569; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: #2563eb; }
         .btn { background: #2563eb; color: #ffffff; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block; transition: background 0.2s; }
@@ -44,7 +44,7 @@
         th { background: #f8fafc; padding: 20px; font-weight: 600; color: #334155; border-bottom: 1px solid #e2e8f0; }
         td { padding: 20px; border-bottom: 1px solid #e2e8f0; color: #475569; }
         tr:last-child td { border-bottom: none; }
-        .badge { padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge { padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; text-transform: uppercase; }
         .badge-active { background: #d1fae5; color: #065f46; }
         .badge-supported { background: #dbeafe; color: #1e40af; }
         .badge-legacy { background: #e2e8f0; color: #334155; }
@@ -64,16 +64,16 @@
                 <a href="#features">Features</a>
                 <a href="#about">About</a>
                 <a href="#releases">Releases</a>
-                <a href="#download" class="btn">Download</a>
+                <a href="#" class="nav-dl-btn btn">Download</a>
             </div>
         </div>
     </nav>
     <header>
-        <span class="version-tag">Introducing AxelOS v2.0</span>
+        <span class="version-tag" id="tag-ver">Loading Version...</span>
         <h1>The ultimate OS for <br><span>Daily Use, Gaming & Hacking</span>.</h1>
         <p class="hero-p">Why compromise? AxelOS bridges the gap between a polished everyday desktop, extreme gaming performance, and a robust environment for security professionals.</p>
         <div class="hero-btns" id="download">
-            <a href="#" class="btn btn-lg">Download AxelOS v2.0</a>
+            <a href="#" class="main-dl-btn btn btn-lg">Download AxelOS</a>
             <a href="#releases" class="btn btn-lg btn-alt">View Changelog</a>
         </div>
         <p class="meta-text">Free & Open Source ? 64-bit ISO (~2.1 GB)</p>
@@ -129,28 +129,8 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td style="font-weight:700; color:#0f172a;">v2.0 (Latest)</td>
-                            <td>July 2026</td>
-                            <td style="font-style: italic;">"Apex"</td>
-                            <td>Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.</td>
-                            <td><span class="badge badge-active">Active (LTS)</span></td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight:700; color:#0f172a;">v1.5</td>
-                            <td>December 2025</td>
-                            <td style="font-style: italic;">"Breeze"</td>
-                            <td>Added Flatpak support, native GPU driver installer wrapper, fixed Bluetooth bugs.</td>
-                            <td><span class="badge badge-supported">Supported</span></td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight:700; color:#0f172a;">v1.0</td>
-                            <td>May 2025</td>
-                            <td style="font-style: italic;">"Genesis"</td>
-                            <td>Initial official deployment of AxelOS Core repository packages.</td>
-                            <td><span class="badge badge-legacy">Legacy</span></td>
-                        </tr>
+                    <tbody id="history-rows">
+                        <!-- Filled automatically by JavaScript engine -->
                     </tbody>
                 </table>
             </div>
@@ -170,5 +150,39 @@
             </div>
         </div>
     </footer>
+
+    <!-- Smart JavaScript Reader Engine -->
+    <script>
+        fetch('./config.json')
+            .then(res => res.json())
+            .then(data => {
+                // Update download URLs automatically
+                document.querySelectorAll('.main-dl-btn').forEach(b => {
+                    b.href = data.download_url;
+                    b.innerText = `Download AxelOS ${data.latest_version}`;
+                });
+                document.querySelectorAll('.nav-dl-btn').forEach(b => b.href = data.download_url);
+                document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
+                
+                // Build version history table rows dynamically
+                const container = document.getElementById('history-rows');
+                container.innerHTML = '';
+                data.history.forEach(item => {
+                    let badgeClass = 'badge-legacy';
+                    if (item.status === 'active') badgeClass = 'badge-active';
+                    if (item.status === 'supported') badgeClass = 'badge-supported';
+
+                    container.innerHTML += `
+                        <tr>
+                            <td style="font-weight:700; color:#0f172a;">${item.version}</td>
+                            <td>${item.date}</td>
+                            <td style="font-style: italic;">"${item.codename}"</td>
+                            <td>${item.updates}</td>
+                            <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                        </tr>
+                    `;
+                });
+            }).catch(err => console.error("Error reading setup profiles:", err));
+    </script>
 </body>
 </html>
