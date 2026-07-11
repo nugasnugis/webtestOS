@@ -64,8 +64,8 @@ if(window.location.hash === "#guide") showGuide();
 if(window.location.hash === "#releases") showReleases();
 
 // ? CHANGE THESE TO YOUR EXACT USERNAME & REPOSITORY DETAILS
-const username = "YOUR_GITHUB_USERNAME";
-const repo = "YOUR_REPO_NAME";
+const username = "nugasnugis";
+const repo = "webtestOS";
 
 fetch(`https://github.com{username}/${repo}/contents/webss`)
     .then(res => res.json())
