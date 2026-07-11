@@ -6,15 +6,17 @@
     <title>AxelOS - Installation Guide</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; color: #0f172a; padding: 60px 20px; line-height: 1.6; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; color: #0f172a; padding-top: 80px; line-height: 1.6; }
+        
         nav { background: #ffffff; border-bottom: 1px solid #e2e8f0; position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
         .nav-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; items: center; padding: 16px 0; }
         .logo-text { font-size: 20px; font-weight: 800; color: #ffffff; background: #2563eb; padding: 6px 14px; border-radius: 8px; letter-spacing: 0.5px; text-decoration: none; }
-        .nav-links a { margin-left: 24px; text-decoration: none; color: #475569; font-weight: 500; transition: color 0.2s; }
+        .nav-links a { margin-left: 24px; text-decoration: none; color: #475569; font-weight: 500; }
         .nav-links a:hover { color: #2563eb; }
         .btn { background: #2563eb; color: #ffffff; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block; }
         
-        .guide-box { max-width: 760px; margin: 80px auto 0 auto; background: #ffffff; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .guide-container { max-width: 760px; margin: 40px auto; padding: 0 20px; }
+        .guide-box { background: #ffffff; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .back-link { display: inline-block; text-decoration: none; color: #2563eb; font-weight: 600; margin-bottom: 24px; font-size: 15px; }
         .back-link:hover { text-decoration: underline; }
         h1 { font-size: 32px; font-weight: 800; margin-bottom: 32px; letter-spacing: -0.5px; color: #0f172a; }
@@ -30,49 +32,54 @@
     </style>
 </head>
 <body>
-    <!-- Independent, static navigation element for the guide subpage -->
+
     <nav>
         <div class="nav-container">
-            <a href="../" class="logo-text">AxelOS</a>
+            <!-- Explicitly points back to the main homepage root file -->
+            <a href="../index.html" class="logo-text">AxelOS</a>
             <div class="nav-links">
-                <a href="../#features">Features</a>
-                <a href="../#about">About</a>
-                <a href="../#releases">Releases</a>
-                <a href="../" class="btn">Back Home</a>
+                <a href="../index.html#features">Features</a>
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#releases">Releases</a>
+                <a href="../index.html" class="btn">Back Home</a>
             </div>
         </div>
     </nav>
-    <div class="guide-box">
-        <a href="../" class="back-link">&larr; Back to Home</a>
-        <h1>Deployment & Installation Guide</h1>
+    <div class="guide-container">
+        <div class="guide-box">
+            <!-- Explicitly points back to the main homepage root file -->
+            <a href="../index.html" class="back-link">&larr; Back to Home</a>
+            <h1>Deployment & Installation Guide</h1>
 
-        <div class="step">
-            <div class="step-num">Step 1</div>
-            <h3>Download the Platform Image</h3>
-            <p>Obtain the latest stable verified payload directly from our source library repository release index. Verify the SHA256 checksum profile checks before flashing.</p>
-        </div>
+            <div class="step">
+                <div class="step-num">Step 1</div>
+                <h3>Download the Platform Image</h3>
+                <p>Obtain the latest stable verified payload directly from our source library repository release index. Verify the SHA256 checksum profile checks before flashing.</p>
+            </div>
 
-        <div class="step">
-            <div class="step-num">Step 2</div>
-            <h3>Flash Target Media Flashcards</h3>
-            <p>Insert an empty USB Flashdrive (Minimum capacity 8 GB). Use image flash tools like BalenaEtcher or Rufus to build the boot partition architecture maps.</p>
-        </div>
+            <div class="step">
+                <div class="step-num">Step 2</div>
+                <h3>Flash Target Media Flashcards</h3>
+                <p>Insert an empty USB Flashdrive (Minimum capacity 8 GB). Use image flash tools like BalenaEtcher or Rufus to build the boot partition architecture maps.</p>
+            </div>
 
-        <div class="step">
-            <div class="step-num">Step 3</div>
-            <h3>Adjust Target BIOS Boot Rules</h3>
-            <p>Restart your destination hardware system. Tap <code>F12</code>, <code>F2</code>, or <code>Del</code> immediately during startup to access your internal BIOS panel layout rules:</p>
-            <ul>
-                <li>Set Secure Boot status parameter rules to: <strong>Disabled</strong></li>
-                <li>Set boot order parameters to read your flashed <strong>USB Mass Storage</strong> drive first.</li>
-            </ul>
-        </div>
+            <div class="step">
+                <div class="step-num">Step 3</div>
+                <h3>Adjust Target BIOS Boot Rules</h3>
+                <p>Restart your destination hardware system. Tap <code>F12</code>, <code>F2</code>, or <code>Del</code> immediately during startup to access your internal BIOS panel layout rules:</p>
+                <ul>
+                    <li>Set Secure Boot status parameter rules to: <strong>Disabled</strong></li>
+                    <li>Set boot order parameters to read your flashed <strong>USB Mass Storage</strong> drive first.</li>
+                </ul>
+            </div>
 
-        <div class="step">
-            <div class="step-num">Step 4</div>
-            <h3>Run Installer Utility Configurations</h3>
-            <p>Boot directly into our live desktop window layer. Click on the system menu icon labeled <strong>"Install AxelOS"</strong> and follow the partition disk formatting wizard setup directions.</p>
+            <div class="step">
+                <div class="step-num">Step 4</div>
+                <h3>Run Installer Utility Configurations</h3>
+                <p>Boot directly into our live desktop window layer. Click on the system menu icon labeled <strong>"Install AxelOS"</strong> and follow the partition disk formatting wizard setup directions.</p>
+            </div>
         </div>
     </div>
+
 </body>
 </html>
