@@ -1,5 +1,5 @@
 let screenshots = [], slideTitles = [], currentIndex = 0, autoSwipeTimer;
-let username = "", repo = "";             
+let username = "nugasnugis", repo = "webtestOS";             
 
 function cleanImageTitle(f) { return f.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "); }
 
