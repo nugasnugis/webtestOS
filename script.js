@@ -1,5 +1,9 @@
 let screenshots = [], slideTitles = [], currentIndex = 0, autoSwipeTimer;
 
+// Change these manually to your exact GitHub information
+const username = "nugasnugis"; 
+const repo = "webtestOS";             
+
 function cleanImageTitle(f) { return f.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "); }
 
 function updateCarouselIndicators() {
@@ -99,7 +103,7 @@ fetch('config.json')
                 track.innerHTML += `<div class="slide-pane"><img src="webss/${f}" alt="${f}"></div>`;
                 dots.innerHTML += `<span class="ind-dot ${idx===0?'active':''}" onclick="jumpToSlide(${idx}); resetAutoSwipeTimer();"></span>`;
             });
-            document.getElementById('screen-title').innerText = cleanImageTitle(screenshots[0]);
+            document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
         }
 
         const container = document.getElementById('history-rows');
@@ -111,11 +115,8 @@ fetch('config.json')
             });
         }
         
-        // ? FIX FOR THE FATAL DATA BREAK ERROR: Clean index tracking parameter slicing
-        const parts = data.download_url.split('/');
-        const userNode = parts[3];
-        const repoNode = parts[4];
-        return fetch(`https://github.com{userNode}/${repoNode}/releases/latest`);
+        // ? Fixed: Loads clean release data using the hardcoded values directly
+        return fetch(`https://github.com{username}/${repo}/releases/latest`);
     })
     .then(res => res.json())
     .then(release => {
