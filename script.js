@@ -111,8 +111,11 @@ fetch('config.json')
             });
         }
         
+        // ? FIX FOR THE FATAL DATA BREAK ERROR: Clean index tracking parameter slicing
         const parts = data.download_url.split('/');
-        return fetch(`https://github.com{parts[3]}/${parts[4]}/releases/latest`);
+        const userNode = parts[3];
+        const repoNode = parts[4];
+        return fetch(`https://github.com{userNode}/${repoNode}/releases/latest`);
     })
     .then(res => res.json())
     .then(release => {
