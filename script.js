@@ -78,8 +78,39 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else if(window.location.hash === "#downloads") showDownloads(); else showHome();
 });
 
+function useOfflineFallback() {
+    document.getElementById('tag-ver').innerText = "Introducing AxelOS v2.0";
+    document.getElementById('spec-cpu').innerText = "2.0 GHz Dual-Core 64-bit Processor";
+    document.getElementById('spec-ram').innerText = "4 GB System Memory (RAM)";
+    document.getElementById('spec-storage').innerText = "25 GB Free Hard Drive Space";
+    document.getElementById('spec-gpu').innerText = "Intel HD / AMD Radeon Graphics (Vulkan)";
+    screenshots = ["desktop-workspace.png", "my_gaming_setup.jpg", "cool-hacking-terminal.webp"];
+    const track = document.getElementById('slider-track'), dots = document.getElementById('dots-container');
+    if(track && dots) {
+        track.innerHTML = ''; dots.innerHTML = '';
+        screenshots.forEach((f, idx) => {
+            track.innerHTML += `<div class="slide-pane"><img src="webss/${f}" alt="${f}"></div>`;
+            dots.innerHTML += `<span class="ind-dot ${idx===0?'active':''}" onclick="jumpToSlide(${idx}); resetAutoSwipeTimer();"></span>`;
+        });
+        document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
+    }
+    const container = document.getElementById('history-rows');
+    if (container) {
+        container.innerHTML = `<tr><td style="font-weight:700; color:inherit;">v2.0 (Latest)</td><td>July 2026</td><td style="font-style:italic;">"Apex"</td><td>Zen-tuned kernel upgrade, overhauled UI, sandboxed shell.</td><td><span class="badge badge-active">Active</span></td></tr>`;
+    }
+    const dlContainer = document.getElementById('asset-cards-container');
+    if (dlContainer) {
+        dlContainer.innerHTML = `
+            <div style="background:var(--bg-fallback,#ffffff); padding:24px; border:1px solid #e2e8f0; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; color:inherit; grid-column:1/-1; text-align:center;">
+                <div><h4 style="font-size:16px; font-weight:700; margin-bottom:8px;">axelos-core-desktop-amd64.iso</h4><p style="font-size:13px; opacity:0.7; margin-bottom:16px;">Download package mirrors safely hosted directly via our central repository system nodes.</p></div>
+                <a href="https://github.com{username}/${repo}/releases/latest" target="_blank" class="btn" style="padding:12px; font-weight:600;"><i class="fas fa-external-link-alt" style="margin-right:8px;"></i>Go to GitHub Releases Page</a>
+            </div>`;
+    }
+    startAutoSwipe();
+}
+
 fetch('config.json')
-    .then(res => res.json())
+    .then(res => { if(!res.ok) throw new Error(); return res.json(); })
     .then(data => {
         document.querySelectorAll('.main-dl-btn, #hero-dl-btn, .nav-dl-btn').forEach(b => { 
             b.removeAttribute('href'); b.setAttribute('onclick', 'showDownloads()');
@@ -110,14 +141,16 @@ fetch('config.json')
                 container.innerHTML += `<tr><td style="font-weight:700; color:inherit;">${item.version}</td><td>${item.date}</td><td style="font-style:italic;">"${item.codename}"</td><td>${item.updates}</td><td><span class="badge ${badgeClass}">${item.status}</span></td></tr>`;
             });
         }
-        
         startAutoSwipe();
         loadLiveGitHubAssets();
-    }).catch(err => console.error("Config load error:", err));
+    })
+    .catch(() => {
+        useOfflineFallback();
+    });
 
 function loadLiveGitHubAssets() {
     fetch(`https://github.com{username}/${repo}/releases/latest`)
-        .then(res => { if(!res.ok) throw new Error("Blocked"); return res.json(); })
+        .then(res => { if(!res.ok) throw new Error(); return res.json(); })
         .then(release => {
             if (!release || !release.assets) return;
             document.getElementById('dl-page-title').innerText = `AxelOS Build Revisions: ${release.name || release.tag_name}`;
@@ -129,18 +162,13 @@ function loadLiveGitHubAssets() {
                 let isIso = asset.name.endsWith('.iso'), cardIcon = isIso ? 'fa-compact-disc' : 'fa-file-archive', buttonText = isIso ? 'Download Installer ISO' : 'Download Package Source', fileSize = (asset.size / (1024 * 1024)).toFixed(1) + " MB";
                 container.innerHTML += `<div style="background:var(--bg-fallback,#ffffff); padding:24px; border:1px solid #e2e8f0; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; color:inherit;"><div><div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;"><div style="background:#eff6ff; color:#2563eb; width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;"><i class="fas ${cardIcon}"></i></div><div><h4 style="font-size:15px; font-weight:700; word-break:break-all;">${asset.name}</h4><p style="font-size:13px; opacity:0.65; margin-top:2px;">Size: ${fileSize} ? Hits: ${asset.download_count}</p></div></div></div><a href="${asset.browser_download_url}" class="btn" style="text-align:center; margin-top:16px; font-size:14px; font-weight:600; padding:10px 0; width:100%; display:block;"><i class="fas fa-download" style="margin-right:8px;"></i>${buttonText}</a></div>`;
             });
-        }).catch(err => {
+        }).catch(() => {
             const container = document.getElementById('asset-cards-container');
-            if (container) {
+            if (container && container.innerHTML === '') {
                 container.innerHTML = `
-                    <div style="background:var(--bg-fallback,#ffffff); padding:24px; border:1px solid #e2e8f0; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; color:inherit;">
-                        <div>
-                            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                                <div style="background:#eff6ff; color:#2563eb; width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px;"><i class="fas fa-compact-disc"></i></div>
-                                <div><h4 style="font-size:15px; font-weight:700;">axelos-core-desktop-amd64.iso</h4><p style="font-size:13px; opacity:0.65; margin-top:2px;">Official Direct Release Mirror Node</p></div>
-                            </div>
-                        </div>
-                        <a href="https://github.com{username}/${repo}/releases/latest" class="btn" style="text-align:center; margin-top:16px; font-size:14px; font-weight:600; padding:10px 0; width:100%; display:block;"><i class="fas fa-external-link-alt" style="margin-right:8px;"></i>Go to GitHub Downloads</a>
+                    <div style="background:var(--bg-fallback,#ffffff); padding:24px; border:1px solid #e2e8f0; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; color:inherit; grid-column:1/-1; text-align:center;">
+                        <div><h4 style="font-size:16px; font-weight:700; margin-bottom:8px;">axelos-core-desktop-amd64.iso</h4><p style="font-size:13px; opacity:0.7; margin-bottom:16px;">Download package mirrors safely hosted directly via our central repository system nodes.</p></div>
+                        <a href="https://github.com{username}/${repo}/releases/latest" target="_blank" class="btn" style="padding:12px; font-weight:600;"><i class="fas fa-external-link-alt" style="margin-right:8px;"></i>Go to GitHub Releases Page</a>
                     </div>`;
             }
         });
