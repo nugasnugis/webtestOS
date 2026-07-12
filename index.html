@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AxelOS - Daily Driving, Gaming & Hacking Combined</title>
-    <!-- Map external modular style instructions securely -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" href="./favicon.png">
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -23,20 +20,20 @@
                 <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
                     <svg style="width:20px; height:20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="theme-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14.5 12a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path></svg>
                 </button>
+                <a onclick="showDownloads()" class="nav-dl-btn btn">Download</a>
             </div>
         </div>
     </nav>
 
     <div id="scroll-top-arrow" onclick="window.scrollTo({top:0, behavior:'smooth'})">&uarr;</div>
 
-    <!-- View 1: Main Landing Dashboard -->
     <div id="main-homepage-content">
         <header>
             <span class="version-tag" id="tag-ver">Introducing AxelOS...</span>
             <h1>The ultimate OS for <br><span>Daily Use, Gaming & Hacking</span>.</h1>
             <p class="hero-p">Why compromise? AxelOS bridges the gap between a polished everyday desktop, extreme gaming performance, and a robust environment for security professionals.</p>
             <div class="hero-btns" id="download">
-                <a id="hero-dl-btn" href="#" class="btn btn-lg">Download AxelOS</a>
+                <a id="hero-dl-btn" onclick="showDownloads()" class="btn btn-lg main-dl-btn">Download AxelOS</a>
                 <a onclick="showGuide()" class="btn btn-lg btn-alt">Installation Guide</a>
             </div>
             <p class="meta-text">Free & Open Source ? 64-bit ISO (~2.1 GB)</p>
@@ -101,7 +98,6 @@
         </section>
     </div>
 
-    <!-- View 2: Standalone Installation Guide + Accordion FAQ Component -->
     <div id="main-guide-content" class="page-view-container">
         <div class="content-card-wrapper">
             <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
@@ -112,36 +108,35 @@
             <div class="step"><div class="step-num">Step 4</div><h3>Installation</h3><p>Boot from USB and follow the partitioning formatting disk setup wizard choices.</p></div>
             
             <div class="faq-section">
-                <h2 style="font-size:24px; font-weight:800; margin-bottom:28px; margin-top:50px; text-align:center;">Frequently Asked Questions</h2>
+                <h2 style="font-size:26px; font-weight:800; margin-bottom:28px; margin-top:50px; text-align:center;">Frequently Asked Questions</h2>
                 <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">Can I dual-boot AxelOS with Windows? <span>+</span></button>
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Can I dual-boot AxelOS with Windows? <span class="faq-icon">+</span></button>
                     <div class="faq-panel"><div class="faq-content">Yes! During Step 4 of the installation guide, select 'Install Alongside' to safely partition your drive without erasing your existing Windows data.</div></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">Are anti-cheat gaming systems supported? <span>+</span></button>
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Are anti-cheat gaming systems supported? <span class="faq-icon">+</span></button>
                     <div class="faq-panel"><div class="faq-content">AxelOS includes kernel-level driver compatibility loops for Proton. Games using Valve Easy Anti-Cheat (EAC) and BattlEye load natively out of the box.</div></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">Is this OS safe for beginners to use daily? <span>+</span></button>
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Is this OS safe for beginners to use daily? <span class="faq-icon">+</span></button>
                     <div class="faq-panel"><div class="faq-content">Absolutely. While it contains powerful tools for hacking and optimization, the desktop interface behaves exactly like a standard, user-friendly operating system.</div></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">How do I update packages and software in AxelOS? <span>+</span></button>
+                    <button class="faq-trigger" onclick="toggleFaq(this)">How do I update packages and software in AxelOS? <span class="faq-icon">+</span></button>
                     <div class="faq-panel"><div class="faq-content">AxelOS features a rolling-release system. You can update your entire architecture layout smoothly via the App Software Center or by executing standard terminal update parameters.</div></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">Does AxelOS support third-party graphics card drivers? <span>+</span></button>
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Does AxelOS support third-party graphics card drivers? <span class="faq-icon">+</span></button>
                     <div class="faq-panel"><div class="faq-content">Yes, proprietary drivers for NVIDIA and AMD GPUs are pre-bundled within the ISO file and automatically configure themselves onto your hardware during installation.</div></div>
                 </div>
                 <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">Can I install standard Linux `.deb` or `.rpm` packages? <span>+</span></button>
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Can I install standard Linux `.deb` or `.rpm` packages? <span class="faq-icon">+</span></button>
                     <div class="faq-panel"><div class="faq-content">AxelOS comes natively integrated with Flatpak, Snap, and isolated containers, allowing you to install any open-source software format without dependency breakage.</div></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- View 3: Standalone Version Releases -->
     <div id="main-releases-content" class="page-view-container">
         <div class="content-card-wrapper">
             <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
@@ -156,34 +151,38 @@
         </div>
     </div>
 
+    <!-- New Internal SPA Downloads Window Panel Layout -->
+    <div id="main-downloads-content" class="page-view-container">
+        <div class="content-card-wrapper" style="text-align: center;">
+            <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
+            <h1 id="dl-page-title" style="margin-bottom: 8px;">AxelOS Core Downloads</h1>
+            <p id="dl-page-tagline" style="color: #475569; margin-bottom: 32px;">Connecting to secure mirror nodes...</p>
+            <div id="asset-cards-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; text-align: left; margin-bottom: 40px;"></div>
+            <div style="background: var(--bg-fallback, #f1f5f9); padding: 24px; border-radius: 12px; text-align: left; border: 1px solid #e2e8f0;">
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: inherit;">Security Verification Checks</h3>
+                <p style="font-size: 14px; opacity: 0.85; margin-bottom: 12px;">Verify integrity parameters before writing payloads:</p>
+                <code style="display: block; background: #0f172a; color: #38bdf8; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 13px; word-break: break-all;">sha256sum axelos-core-desktop-amd64.iso</code>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container footer-flex">
-            <div class="footer-left">
-                <h4>AxelOS Project</h4>
-                <p>Independent community-driven Linux distribution.</p>
-            </div>
+            <div class="footer-left"><h4>AxelOS Project</h4><p>Independent community-driven Linux distribution.</p></div>
             <div class="footer-links" style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
                 <a href="https://google.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
-                    <img src="./icon/google.png" alt="Google" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);">
-                    <span>Google</span>
+                    <img src="./icon/google.png" alt="Google" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>Google</span>
                 </a>
                 <a href="https://youtube.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
-                    <img src="./icon/youtube.png" alt="YouTube" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);">
-                    <span>YouTube</span>
+                    <img src="./icon/youtube.png" alt="YouTube" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>YouTube</span>
                 </a>
                 <a href="https://github.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
-                    <img src="./icon/github.png" alt="GitHub" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);">
-                    <span>GitHub</span>
-                </a>
-                <a href="https://github.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
-                    <img src="./icon/web.png" alt="web" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);">
-                    <span>Web</span>
+                    <img src="./icon/github.png" alt="GitHub" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>GitHub</span>
                 </a>
             </div>
         </div>
     </footer>
 
-    <!-- Force cache busting modular execution tracking -->
     <script src="./script.js?v=6"></script>
 </body>
 </html>
