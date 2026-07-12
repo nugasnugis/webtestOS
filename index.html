@@ -24,7 +24,7 @@
         </div>
     </nav>
 
-    <div id="scroll-top-arrow" onclick="window.scrollTo({top:0, behavior:'smooth'})" style="position:fixed; bottom:24px; right:24px; width:44px; height:44px; background:#2563eb; color:white; border-radius:55px; display:none; align-items:center; justify-content:center; font-weight:bold; cursor:pointer; z-index:500; font-size:18px;">&uarr;</div>
+    <div id="scroll-top-arrow" onclick="window.scrollTo({top:0, behavior:'smooth'})">&uarr;</div>
 
     <!-- View 1: Main Landing Dashboard -->
     <div id="main-homepage-content">
@@ -39,7 +39,6 @@
             <p class="meta-text">Free & Open Source ? 64-bit ISO (~2.1 GB)</p>
         </header>
 
-        <!-- Dynamic swipe track viewport shell component layout -->
         <div class="carousel-shell">
             <button class="arrow-btn arrow-left" onclick="slideCarousel(-1)">&larr;</button>
             <button class="arrow-btn arrow-right" onclick="slideCarousel(1)">&rarr;</button>
@@ -99,7 +98,7 @@
         </section>
     </div>
 
-    <!-- View 2: Standalone Installation Guide -->
+    <!-- View 2: Standalone Installation Guide + Accordion FAQ Component -->
     <div id="main-guide-content" class="page-view-container">
         <div class="content-card-wrapper">
             <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
@@ -110,18 +109,30 @@
             <div class="step"><div class="step-num">Step 4</div><h3>Installation</h3><p>Boot from USB and follow the partitioning formatting disk setup wizard choices.</p></div>
             
             <div class="faq-section">
-                <h2 style="font-size:24px; font-weight:800; margin-bottom:20px; margin-top:40px; text-align:center;">Frequently Asked Questions</h2>
+                <h2 style="font-size:24px; font-weight:800; margin-bottom:28px; margin-top:50px; text-align:center;">Frequently Asked Questions</h2>
                 <div class="faq-item">
                     <button class="faq-trigger" onclick="toggleFaq(this)">Can I dual-boot AxelOS with Windows? <span>+</span></button>
-                    <div class="faq-panel"><p style="padding:15px 0;">Yes! During Step 4 of the installation guide, select 'Install Alongside' to safely partition your drive without erasing your existing Windows data.</p></div>
+                    <div class="faq-panel"><div class="faq-content">Yes! During Step 4 of the installation guide, select 'Install Alongside' to safely partition your drive without erasing your existing Windows data.</div></div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-trigger" onclick="toggleFaq(this)">Are anti-cheat gaming systems supported? <span>+</span></button>
-                    <div class="faq-panel"><p style="padding:15px 0;">AxelOS includes kernel-level driver compatibility loops for Proton. Games using Valve Easy Anti-Cheat (EAC) and BattlEye load natively out of the box.</p></div>
+                    <div class="faq-panel"><div class="faq-content">AxelOS includes kernel-level driver compatibility loops for Proton. Games using Valve Easy Anti-Cheat (EAC) and BattlEye load natively out of the box.</div></div>
                 </div>
                 <div class="faq-item">
                     <button class="faq-trigger" onclick="toggleFaq(this)">Is this OS safe for beginners to use daily? <span>+</span></button>
-                    <div class="faq-panel"><p style="padding:15px 0;">Absolutely. While it contains powerful tools for hacking and optimization, the desktop interface behaves exactly like a standard user-friendly operating system.</p></div>
+                    <div class="faq-panel"><div class="faq-content">Absolutely. While it contains powerful tools for hacking and optimization, the desktop interface behaves exactly like a standard, user-friendly operating system.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">How do I update packages and software in AxelOS? <span>+</span></button>
+                    <div class="faq-panel"><div class="faq-content">AxelOS features a rolling-release system. You can update your entire architecture layout smoothly via the App Software Center or by executing standard terminal update parameters.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Does AxelOS support third-party graphics card drivers? <span>+</span></button>
+                    <div class="faq-panel"><div class="faq-content">Yes, proprietary drivers for NVIDIA and AMD GPUs are pre-bundled within the ISO file and automatically configure themselves onto your hardware during installation.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Can I install standard Linux `.deb` or `.rpm` packages? <span>+</span></button>
+                    <div class="faq-panel"><div class="faq-content">AxelOS comes natively integrated with Flatpak, Snap, and isolated containers, allowing you to install any open-source software format without dependency breakage.</div></div>
                 </div>
             </div>
         </div>
@@ -144,12 +155,32 @@
 
     <footer>
         <div class="container footer-flex">
-            <div class="footer-left"><h4>AxelOS Project</h4><p>Independent community-driven Linux distribution.</p></div>
-            <div class="footer-links"><a onclick="showHome()">Home</a><a onclick="showGuide()">Documentation</a><a onclick="showReleases()">Releases</a></div>
+            <div class="footer-left">
+                <h4>AxelOS Project</h4>
+                <p>Independent community-driven Linux distribution.</p>
+            </div>
+            <div class="footer-links" style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+                <a href="https://google.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
+                    <img src="./icon/google.png" alt="Google" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);">
+                    <span>Google</span>
+                </a>
+                <a href="https://youtube.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
+                    <img src="./icon/youtube.png" alt="YouTube" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);">
+                    <span>YouTube</span>
+                </a>
+                <a href="https://github.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
+                    <img src="./icon/github.png" alt="GitHub" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);">
+                    <span>GitHub</span>
+                </a>
+                <a href="https://github.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
+                    <img src="./icon/web.png" alt="web" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);">
+                    <span>Web</span>
+                </a>
+            </div>
         </div>
     </footer>
 
-    <!-- Force cache busting inside script connection -->
-    <script src="./script.js?v=4"></script>
+    <!-- Force cache busting modular execution tracking -->
+    <script src="./script.js?v=6"></script>
 </body>
 </html>
