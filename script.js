@@ -1,5 +1,5 @@
 let screenshots = [], slideTitles = [], currentIndex = 0, autoSwipeTimer;
-let username = "nugasnugis", repo = "axelos";             
+let username = "nugasnugis", repo = "AxelOS";             
 
 function cleanImageTitle(f) { return f.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "); }
 
@@ -90,7 +90,7 @@ fetch('config.json')
         document.getElementById('spec-gpu').innerText = data.requirements.gpu;
 
         username = data.username || "nugasnugis";
-        repo = data.repo || "axelos";
+        repo = data.repo || "AxelOS";
         screenshots = data.webss || [];
         
         const track = document.getElementById('slider-track'), dots = document.getElementById('dots-container');
@@ -104,26 +104,30 @@ fetch('config.json')
         }
 
         // Combined Scraper: Scans config metadata history and maps direct payload download buttons
+        // ? Robust Case-Corrected Table Matrix Renderer
         const container = document.getElementById('history-rows');
         if (container) {
             container.innerHTML = '';
             data.history.forEach(item => {
                 let badgeClass = 'badge-legacy';
-                if(item.status.toLowerCase().includes('latest')) badgeClass = 'badge-active';
-                if(item.status.toLowerCase().includes('nightly') || item.status.toLowerCase().includes('pre-release')) badgeClass = 'badge-supported';
+                const currentStatus = item.status.toLowerCase();
+                if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
+                else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
                 
-                // Maps a fallback link if the live background download assets fail to resolve
-                let fallbackUrl = `https://github.com{username}/${repo}/releases/tag/${item.version.split(' ')[0]}`;
+                // Formulates a completely safe clean ID without breaking array loops
+                let cleanId = item.version.trim().replace(/[^a-zA-Z0-9]/g, '-');
+                let versionTag = item.version.trim().split(' ')[0];
+                let fallbackUrl = `https://github.com{username}/${repo}/releases/tag/${versionTag}`;
                 
                 container.innerHTML += `
-                    <tr id="row-${item.version.split(' ')[0].replace(/\./g, '-')}">
+                    <tr id="row-${cleanId}">
                         <td style="font-weight:700; color:inherit;">${item.version}</td>
                         <td>${item.date}</td>
                         <td style="font-style:italic;">"${item.codename}"</td>
                         <td>${item.updates}</td>
                         <td><span class="badge ${badgeClass}">${item.status}</span></td>
                         <td style="text-align:center;">
-                            <a href="${fallbackUrl}" id="dl-link-${item.version.split(' ')[0].replace(/\./g, '-')}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;">
+                            <a href="${fallbackUrl}" id="dl-link-${cleanId}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;" target="_blank">
                                 <i class="fas fa-download" style="margin-right:6px;"></i>Download ISO
                             </a>
                         </td>
@@ -133,23 +137,25 @@ fetch('config.json')
         
         startAutoSwipe();
         
-        // Triggers the background GitHub asset tracking scanner
+        // Triggers the matching case-sensitive multi-release API scanner
         fetch(`https://github.com{username}/${repo}/releases`)
             .then(res => res.json())
             .then(releases => {
                 if(!releases || releases.length === 0) return;
                 releases.forEach(release => {
-                    const tagKey = release.tag_name.replace(/\./g, '-');
-                    const targetBtn = document.getElementById(`dl-link-${tagKey}`);
+                    let cleanTagKey = release.tag_name.trim().replace(/[^a-zA-Z0-9]/g, '-');
+                    let targetButton = document.getElementById(`dl-link-${cleanTagKey}`);
                     
-                    // Finds the primary .iso image file inside the target release channel
-                    const isoAsset = release.assets.find(asset => asset.name.endsWith('.iso'));
-                    if(isoAsset && targetBtn) {
-                        targetBtn.href = isoAsset.browser_download_url;
-                        targetBtn.innerHTML = `<i class="fas fa-compact-disc" style="margin-right:6px;"></i>ISO (${(isoAsset.size / (1024*1024)).toFixed(0)} MB)`;
+                    if (targetButton && release.assets) {
+                        let isoFile = release.assets.find(asset => asset.name.endsWith('.iso'));
+                        if (isoFile) {
+                            targetButton.href = isoFile.browser_download_url;
+                            let sizeMb = (isoFile.size / (1024 * 1024)).toFixed(0);
+                            targetButton.innerHTML = `<i class="fas fa-compact-disc" style="margin-right:6px;"></i>ISO (${sizeMb} MB)`;
+                        }
                     }
                 });
-            }).catch(e => console.warn("API scan timeout:", e));
+            }).catch(e => console.warn("API check bypassed:", e));
             
     }).catch(err => console.error("Config map loop fail:", err));
 
