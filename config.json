@@ -23,7 +23,7 @@
       "codename": "Apex",
       "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
       "status": "latest",
-      "download_url": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
+      "download_link": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
     }
   ]
 }
