@@ -100,7 +100,7 @@ fetch('config.json')
             document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
         }
 
-        // ? FIXED LOOP HANDSHAKE: Creates stable row mapping links cleanly
+        // ? FIXED DIRECT LINK INJECTION ROW ENGINE: Reads link string from config properties natively
         const container = document.getElementById('history-rows');
         if (container) {
             container.innerHTML = '';
@@ -110,54 +110,25 @@ fetch('config.json')
                 if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
                 else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
                 
-                let cleanId = item.version.trim().replace(/[^a-zA-Z0-9]/g, '-');
-                let fallbackUrl = `https://github.com{username}/${repo}/releases/latest`;
+                let targetLink = item.download_link || data.download_url;
                 
                 container.innerHTML += `
-                    <tr id="row-${cleanId}">
+                    <tr>
                         <td style="font-weight:700; color:inherit;">${item.version}</td>
-                        <td id="date-${cleanId}">${item.date}</td>
+                        <td>${item.date}</td>
                         <td style="font-style:italic;">"${item.codename}"</td>
                         <td>${item.updates}</td>
-                        <td id="status-${cleanId}"><span class="badge ${badgeClass}">${item.status}</span></td>
+                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
                         <td style="text-align:center;">
-                            <a href="${fallbackUrl}" id="dl-link-${cleanId}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;" target="_blank">
-                                <i class="fas fa-download" style="margin-right:6px;"></i>Download ISO
+                            <a href="${targetLink}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;" target="_blank">
+                                <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
                             </a>
                         </td>
                     </tr>`;
             });
         }
-        
         startAutoSwipe();
-        
-        // Connects to your case-sensitive live GitHub releases timeline
-        fetch(`https://github.com{username}/${repo}/releases`)
-            .then(res => res.json())
-            .then(releases => {
-                if(!releases || releases.length === 0) return;
-                releases.forEach(release => {
-                    let cleanTagKey = release.tag_name.trim().replace(/[^a-zA-Z0-9]/g, '-');
-                    let targetButton = document.getElementById(`dl-link-${cleanTagKey}`);
-                    let targetDate = document.getElementById(`date-${cleanTagKey}`);
-                    
-                    // Automatically updates columns with live GitHub metrics
-                    if(targetDate) {
-                        targetDate.innerText = new Date(release.published_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-                    }
-                    
-                    if (targetButton && release.assets) {
-                        let isoFile = release.assets.find(asset => asset.name.endsWith('.iso'));
-                        if (isoFile) {
-                            targetButton.href = isoFile.browser_download_url;
-                            let sizeMb = (isoFile.size / (1024 * 1024)).toFixed(0);
-                            targetButton.innerHTML = `<i class="fas fa-compact-disc" style="margin-right:6px;"></i>ISO (${sizeMb} MB)`;
-                        }
-                    }
-                });
-            }).catch(e => console.warn("API check bypassed:", e));
-            
-    }).catch(err => console.error("Config map loop fail:", err));
+    }).catch(err => console.error("Config map failure loop:", err));
 
 document.addEventListener("DOMContentLoaded", () => {
     if(window.location.hash === "#guide") showGuide();
