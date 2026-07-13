@@ -1,5 +1,5 @@
 let screenshots = [], slideTitles = [], currentIndex = 0, autoSwipeTimer;
-let username = "nugasnugis", repo = "AxelOS";             
+const username = "nugasnugis", repo = "AxelOS";             
 
 function cleanImageTitle(f) { return f.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "); }
 
@@ -89,10 +89,7 @@ fetch('config.json')
         document.getElementById('spec-storage').innerText = data.requirements.storage;
         document.getElementById('spec-gpu').innerText = data.requirements.gpu;
 
-        username = data.username || "nugasnugis";
-        repo = data.repo || "AxelOS";
         screenshots = data.webss || [];
-        
         const track = document.getElementById('slider-track'), dots = document.getElementById('dots-container');
         if(track && dots && screenshots.length > 0) {
             track.innerHTML = ''; dots.innerHTML = '';
@@ -103,8 +100,7 @@ fetch('config.json')
             document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
         }
 
-        // Combined Scraper: Scans config metadata history and maps direct payload download buttons
-        // ? Robust Case-Corrected Table Matrix Renderer
+        // ? FIXED LOOP HANDSHAKE: Creates stable row mapping links cleanly
         const container = document.getElementById('history-rows');
         if (container) {
             container.innerHTML = '';
@@ -114,18 +110,16 @@ fetch('config.json')
                 if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
                 else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
                 
-                // Formulates a completely safe clean ID without breaking array loops
                 let cleanId = item.version.trim().replace(/[^a-zA-Z0-9]/g, '-');
-                let versionTag = item.version.trim().split(' ')[0];
-                let fallbackUrl = `https://github.com{username}/${repo}/releases/tag/${versionTag}`;
+                let fallbackUrl = `https://github.com{username}/${repo}/releases/latest`;
                 
                 container.innerHTML += `
                     <tr id="row-${cleanId}">
                         <td style="font-weight:700; color:inherit;">${item.version}</td>
-                        <td>${item.date}</td>
+                        <td id="date-${cleanId}">${item.date}</td>
                         <td style="font-style:italic;">"${item.codename}"</td>
                         <td>${item.updates}</td>
-                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                        <td id="status-${cleanId}"><span class="badge ${badgeClass}">${item.status}</span></td>
                         <td style="text-align:center;">
                             <a href="${fallbackUrl}" id="dl-link-${cleanId}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;" target="_blank">
                                 <i class="fas fa-download" style="margin-right:6px;"></i>Download ISO
@@ -137,7 +131,7 @@ fetch('config.json')
         
         startAutoSwipe();
         
-        // Triggers the matching case-sensitive multi-release API scanner
+        // Connects to your case-sensitive live GitHub releases timeline
         fetch(`https://github.com{username}/${repo}/releases`)
             .then(res => res.json())
             .then(releases => {
@@ -145,6 +139,12 @@ fetch('config.json')
                 releases.forEach(release => {
                     let cleanTagKey = release.tag_name.trim().replace(/[^a-zA-Z0-9]/g, '-');
                     let targetButton = document.getElementById(`dl-link-${cleanTagKey}`);
+                    let targetDate = document.getElementById(`date-${cleanTagKey}`);
+                    
+                    // Automatically updates columns with live GitHub metrics
+                    if(targetDate) {
+                        targetDate.innerText = new Date(release.published_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+                    }
                     
                     if (targetButton && release.assets) {
                         let isoFile = release.assets.find(asset => asset.name.endsWith('.iso'));
