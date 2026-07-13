@@ -1,5 +1,5 @@
 let screenshots = [], slideTitles = [], currentIndex = 0, autoSwipeTimer;
-let username = "nugasnugis", repo = "webtestOS";             
+let username = "axelos-project", repo = "axelos";             
 
 function cleanImageTitle(f) { return f.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "); }
 
@@ -46,11 +46,9 @@ function hideAllViews() {
     document.getElementById('main-homepage-content').style.display = 'none';
     document.getElementById('main-guide-content').style.display = 'none';
     document.getElementById('main-releases-content').style.display = 'none';
-    document.getElementById('main-downloads-content').style.display = 'none';
 }
 function showGuide() { hideAllViews(); document.getElementById('main-guide-content').style.display = 'block'; window.scrollTo({top:0}); history.pushState(null, "", "#guide"); }
 function showReleases() { hideAllViews(); document.getElementById('main-releases-content').style.display = 'block'; window.scrollTo({top:0}); history.pushState(null, "", "#releases"); }
-function showDownloads() { hideAllViews(); document.getElementById('main-downloads-content').style.display = 'block'; window.scrollTo({top:0}); history.pushState(null, "", "#downloads"); }
 function showHome(a = null) {
     hideAllViews(); document.getElementById('main-homepage-content').style.display = 'block'; history.pushState(null, "", " ");
     if(a) { setTimeout(() => { const t = document.querySelector(a); if(t) t.scrollIntoView({ behavior: 'smooth' }); }, 50); } else { window.scrollTo({top:0}); }
@@ -75,14 +73,14 @@ window.onscroll = function() {
 };
 
 window.addEventListener("popstate", () => {
-    if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else if(window.location.hash === "#downloads") showDownloads(); else showHome();
+    if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
 fetch('config.json')
     .then(res => res.json())
     .then(data => {
         document.querySelectorAll('.main-dl-btn, #hero-dl-btn, .nav-dl-btn').forEach(b => { 
-            b.removeAttribute('href'); b.setAttribute('onclick', 'showDownloads()');
+            b.removeAttribute('href'); b.setAttribute('onclick', 'showReleases()');
             if(b.id === 'hero-dl-btn') b.innerText = `Download AxelOS ${data.latest_version}`;
         });
         document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
@@ -91,7 +89,10 @@ fetch('config.json')
         document.getElementById('spec-storage').innerText = data.requirements.storage;
         document.getElementById('spec-gpu').innerText = data.requirements.gpu;
 
+        username = data.username || "axelos-project";
+        repo = data.repo || "axelos";
         screenshots = data.webss || [];
+        
         const track = document.getElementById('slider-track'), dots = document.getElementById('dots-container');
         if(track && dots && screenshots.length > 0) {
             track.innerHTML = ''; dots.innerHTML = '';
@@ -102,30 +103,27 @@ fetch('config.json')
             document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
         }
 
-      // ? UPDATED TABLE ROW BUILDER MATRIX
+        // Combined Scraper: Scans config metadata history and maps direct payload download buttons
         const container = document.getElementById('history-rows');
         if (container) {
             container.innerHTML = '';
             data.history.forEach(item => {
-                // Determine clean badge color configurations based on status
                 let badgeClass = 'badge-legacy';
-                const currentStatus = item.status.toLowerCase();
-                if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
-                else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
+                if(item.status.toLowerCase().includes('latest')) badgeClass = 'badge-active';
+                if(item.status.toLowerCase().includes('nightly') || item.status.toLowerCase().includes('pre-release')) badgeClass = 'badge-supported';
                 
-                // Formulates a clean clean ID string from the version tag (e.g., "v2-0")
-                let cleanId = item.version.split(' ')[0].replace(/\./g, '-');
+                // Maps a fallback link if the live background download assets fail to resolve
                 let fallbackUrl = `https://github.com{username}/${repo}/releases/tag/${item.version.split(' ')[0]}`;
                 
                 container.innerHTML += `
-                    <tr id="row-${cleanId}">
+                    <tr id="row-${item.version.split(' ')[0].replace(/\./g, '-')}">
                         <td style="font-weight:700; color:inherit;">${item.version}</td>
                         <td>${item.date}</td>
                         <td style="font-style:italic;">"${item.codename}"</td>
                         <td>${item.updates}</td>
                         <td><span class="badge ${badgeClass}">${item.status}</span></td>
                         <td style="text-align:center;">
-                            <a href="${fallbackUrl}" id="dl-link-${cleanId}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;" target="_blank">
+                            <a href="${fallbackUrl}" id="dl-link-${item.version.split(' ')[0].replace(/\./g, '-')}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;">
                                 <i class="fas fa-download" style="margin-right:6px;"></i>Download ISO
                             </a>
                         </td>
@@ -134,77 +132,28 @@ fetch('config.json')
         }
         
         startAutoSwipe();
-        // ? Add this exact trigger call right here:
-        loadLiveGitHubAssets();
-     }).catch(err => console.error("Config structure initialization failure:", err));
-
         
-        // ? Fixed Absolute Array Mapping: Explicit parameters extracted out of your download config URL
-        const parts = data.download_url.split('/');
-        username = parts[3] || "nugasnugis";
-        repo = parts[4] || "axelos";
-        
-        // Streams all releases into the separation engine
-        loadDualDownloadSections();
-    }).catch(err => console.error(err));
-
-function createAssetCard(asset, versionTag, isLatest) {
-    let isIso = asset.name.endsWith('.iso');
-    let cardIcon = isIso ? 'fa-compact-disc' : 'fa-file-archive';
-    let buttonStyle = isLatest ? 'background:#2563eb; color:white;' : 'background:#e2e8f0; color:#334155;';
-    let fileSize = (asset.size / (1024 * 1024)).toFixed(1) + " MB";
-
-    return `
-        <div style="background:var(--bg-fallback,#ffffff); padding:24px; border:1px solid #e2e8f0; border-radius:12px; display:flex; flex-direction:column; justify-content:space-between; color:inherit;">
-            <div>
-                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-                    <div style="background:#eff6ff; color:#2563eb; width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">
-                        <i class="fas ${cardIcon}"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size:14px; font-weight:700; word-break:break-all;">${asset.name}</h4>
-                        <p style="font-size:12px; opacity:0.65; margin-top:2px;">Build: ${versionTag} ? Size: ${fileSize} ? Hits: ${asset.download_count}</p>
-                    </div>
-                </div>
-            </div>
-            <a href="${asset.browser_download_url}" class="btn" style="text-align:center; margin-top:16px; font-size:13px; font-weight:600; padding:10px 0; width:100%; display:block; border-radius:8px; ${buttonStyle}">
-                <i class="fas fa-download" style="margin-right:8px;"></i>Download Build
-            </a>
-        </div>`;
-}
-
-// ? MULTI-RELEASE ISO TRACKER ENGINE
-function loadLiveGitHubAssets() {
-    if (!username || !repo) return;
-    
-    fetch(`https://github.com{username}/${repo}/releases`)
-        .then(res => { if(!res.ok) throw new Error(); return res.json(); })
-        .then(releases => {
-            if(!releases || releases.length === 0) return;
-            
-            releases.forEach(release => {
-                // Generate a clean target key matching our HTML elements (e.g., "v2-0")
-                let cleanTagKey = release.tag_name.replace(/\./g, '-');
-                let targetButton = document.getElementById(`dl-link-${cleanTagKey}`);
-                
-                if (targetButton && release.assets) {
-                    // Search inside this release channel for a file ending in .iso
-                    let isoFile = release.assets.find(asset => asset.name.endsWith('.iso'));
+        // Triggers the background GitHub asset tracking scanner
+        fetch(`https://github.com{username}/${repo}/releases`)
+            .then(res => res.json())
+            .then(releases => {
+                if(!releases || releases.length === 0) return;
+                releases.forEach(release => {
+                    const tagKey = release.tag_name.replace(/\./g, '-');
+                    const targetBtn = document.getElementById(`dl-link-${tagKey}`);
                     
-                    if (isoFile) {
-                        // Upgrade the row button link directly to the direct package mirror download url
-                        targetButton.href = isoFile.browser_download_url;
-                        let sizeMb = (isoFile.size / (1024 * 1024)).toFixed(0);
-                        targetButton.innerHTML = `<i class="fas fa-compact-disc" style="margin-right:6px;"></i>ISO (${sizeMb} MB)`;
+                    // Finds the primary .iso image file inside the target release channel
+                    const isoAsset = release.assets.find(asset => asset.name.endsWith('.iso'));
+                    if(isoAsset && targetBtn) {
+                        targetBtn.href = isoAsset.browser_download_url;
+                        targetBtn.innerHTML = `<i class="fas fa-compact-disc" style="margin-right:6px;"></i>ISO (${(isoAsset.size / (1024*1024)).toFixed(0)} MB)`;
                     }
-                }
-            });
-        })
-        .catch(err => console.warn("GitHub API rate limits or connection restrictions blocked live assets check:", err));
-}
+                });
+            }).catch(e => console.warn("API scan timeout:", e));
+            
+    }).catch(err => console.error("Config map loop fail:", err));
 
 document.addEventListener("DOMContentLoaded", () => {
     if(window.location.hash === "#guide") showGuide();
     if(window.location.hash === "#releases") showReleases();
-    if(window.location.hash === "#downloads") showDownloads();
 });
