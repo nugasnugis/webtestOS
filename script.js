@@ -100,17 +100,16 @@ fetch('config.json')
             document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
         }
 
-        // ? ZERO EXTENSIONS/API DEPENDENCY: Renders purely from your config.json fields
+        // ? FIXED & STREAMLINED HIGH-SPEED MAPPING LOOP ENGINE
         const container = document.getElementById('history-rows');
         if (container) {
             container.innerHTML = '';
             data.history.forEach(item => {
                 let badgeClass = 'badge-legacy';
-                const currentStatus = item.status.toLowerCase();
+                let currentStatus = String(item.status).toLowerCase();
                 if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
                 else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
                 
-                // Purely takes the manual string straight from your json row properties
                 let directLink = item.download_link || data.download_url;
                 
                 container.innerHTML += `
@@ -129,7 +128,7 @@ fetch('config.json')
             });
         }
         startAutoSwipe();
-    }).catch(err => console.error("Config fetch connection breakdown loop:", err));
+    }).catch(err => console.error("Configuration parsing failure block exception loop:", err));
 
 document.addEventListener("DOMContentLoaded", () => {
     if(window.location.hash === "#guide") showGuide();
