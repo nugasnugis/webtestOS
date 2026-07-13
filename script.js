@@ -100,7 +100,7 @@ fetch('config.json')
             document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
         }
 
-        // ? FIXED DIRECT LINK INJECTION ROW ENGINE: Reads link string from config properties natively
+        // ? ZERO EXTENSIONS/API DEPENDENCY: Renders purely from your config.json fields
         const container = document.getElementById('history-rows');
         if (container) {
             container.innerHTML = '';
@@ -110,7 +110,8 @@ fetch('config.json')
                 if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
                 else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
                 
-                let targetLink = item.download_link || data.download_url;
+                // Purely takes the manual string straight from your json row properties
+                let directLink = item.download_link || data.download_url;
                 
                 container.innerHTML += `
                     <tr>
@@ -120,7 +121,7 @@ fetch('config.json')
                         <td>${item.updates}</td>
                         <td><span class="badge ${badgeClass}">${item.status}</span></td>
                         <td style="text-align:center;">
-                            <a href="${targetLink}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;" target="_blank">
+                            <a href="${directLink}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;" target="_blank">
                                 <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
                             </a>
                         </td>
@@ -128,7 +129,7 @@ fetch('config.json')
             });
         }
         startAutoSwipe();
-    }).catch(err => console.error("Config map failure loop:", err));
+    }).catch(err => console.error("Config fetch connection breakdown loop:", err));
 
 document.addEventListener("DOMContentLoaded", () => {
     if(window.location.hash === "#guide") showGuide();
