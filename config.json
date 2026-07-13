@@ -1,13 +1,14 @@
 {
   "username": "nugasnugis",
-  "repo": "webtestOS",
-  "latest_version": "v2.0",
-  "download_url": "https://github.com",
+  "repo": "AxelOS",
+  "latest_version": "v1.0",
+  "download_url": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso",
   "webss": [
     "desktop-workspace.png",
     "my_gaming_setup.jpg",
     "cool-hacking-terminal.webp",
-    "default-wallpaper.png"
+    "default-wallpaper.png",
+    "mpruy.png"
   ],
   "requirements": {
     "cpu": "2.0 GHz Dual-Core 64-bit Processor",
@@ -17,11 +18,11 @@
   },
   "history": [
     {
-      "version": "v2.0 (Latest)",
+      "version": "v1.0 (Latest)",
       "date": "July 2026",
       "codename": "Apex",
       "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
-      "status": "active"
+      "status": "latest"
     }
   ]
 }
