@@ -1,5 +1,5 @@
 let screenshots = [], slideTitles = [], currentIndex = 0, autoSwipeTimer;
-let username = "axelos-project", repo = "axelos";             
+let username = "nugasnugis", repo = "axelos";             
 
 function cleanImageTitle(f) { return f.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "); }
 
@@ -89,7 +89,7 @@ fetch('config.json')
         document.getElementById('spec-storage').innerText = data.requirements.storage;
         document.getElementById('spec-gpu').innerText = data.requirements.gpu;
 
-        username = data.username || "axelos-project";
+        username = data.username || "nugasnugis";
         repo = data.repo || "axelos";
         screenshots = data.webss || [];
         
