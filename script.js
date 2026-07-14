@@ -100,27 +100,27 @@ fetch('config.json')
             document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
         }
 
-        // ? FIXED & STREAMLINED HIGH-SPEED MAPPING LOOP ENGINE
+        // ? FAIL-SAFE SEAMLESS ROW GENERATOR FROM CONFIG
         const container = document.getElementById('history-rows');
         if (container) {
             container.innerHTML = '';
             data.history.forEach(item => {
                 let badgeClass = 'badge-legacy';
-                let currentStatus = String(item.status).toLowerCase();
+                let currentStatus = item.status ? String(item.status).toLowerCase() : 'active';
                 if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
                 else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
                 
-                let directLink = item.download_link || data.download_url;
+                let directLink = item.download_link || data.download_url || '#';
                 
                 container.innerHTML += `
                     <tr>
-                        <td style="font-weight:700; color:inherit;">${item.version}</td>
-                        <td>${item.date}</td>
-                        <td style="font-style:italic;">"${item.codename}"</td>
-                        <td>${item.updates}</td>
-                        <td><span class="badge ${badgeClass}">${item.status}</span></td>
-                        <td style="text-align:center;">
-                            <a href="${directLink}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px;" target="_blank">
+                        <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
+                        <td style="padding: 16px 12px;">${item.date}</td>
+                        <td style="padding: 16px 12px; font-style:italic;">"${item.codename}"</td>
+                        <td style="padding: 16px 12px; line-height:1.6;">${item.updates}</td>
+                        <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${item.status}</span></td>
+                        <td style="padding: 16px 12px; text-align:center;">
+                            <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
                                 <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
                             </a>
                         </td>
@@ -128,7 +128,7 @@ fetch('config.json')
             });
         }
         startAutoSwipe();
-    }).catch(err => console.error("Configuration parsing failure block exception loop:", err));
+    }).catch(err => console.error("Configuration mapping exception loop handle:", err));
 
 document.addEventListener("DOMContentLoaded", () => {
     if(window.location.hash === "#guide") showGuide();
