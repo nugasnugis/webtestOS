@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
- 
+
     <nav>
         <div class="container nav-flex">
             <div onclick="showHome()" class="logo-text">AxelOS</div>
@@ -136,30 +136,38 @@
             <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
             <h1>AxelOS Distribution Hub</h1>
             <p style="color:#475569; margin-top:4px; margin-bottom:24px;">Track system build revisions, changelog patches, and download official mirror ISO files natively.</p>
-            <div class="table-wrapper">
-                <table>
+            <div class="table-wrapper" style="overflow-x: auto; background: transparent; border-radius: 12px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
                     <thead>
-                        <tr>
-                            <th>Version</th>
-                            <th>Built At</th>
-                            <th>Codename</th>
-                            <th>Key Updates / Changelog</th>
-                            <th>Status</th>
-                            <th style="text-align: center;">Download Link</th>
+                        <tr style="border-bottom: 2px solid #e2e8f0;">
+                            <th style="padding: 16px 12px; font-weight: 600;">Version</th>
+                            <th style="padding: 16px 12px; font-weight: 600;">Built At</th>
+                            <th style="padding: 16px 12px; font-weight: 600;">Codename</th>
+                            <th style="padding: 16px 12px; font-weight: 600;">Key Updates / Changelog</th>
+                            <th style="padding: 16px 12px; font-weight: 600;">Status</th>
+                            <th style="padding: 16px 12px; font-weight: 600; text-align: center;">Download Link</th>
                         </tr>
                     </thead>
-                    <tbody id="history-rows">
-                        <!-- Filled automatically by script.js out of config.json and live GitHub releases -->
-                    </tbody>
+                    <tbody id="history-rows"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Brand New Image-Validated Footer Component -->
     <footer>
         <div class="container footer-flex">
-            <div class="footer-left"><h4>AxelOS Project</h4><p>Independent community-driven Linux distribution.</p></div>
+            <div class="footer-left">
+                <h4>AxelOS Project</h4>
+                <p>Independent community-driven Linux distribution.</p>
+                <!-- Default gnrcounter.com code for www.axelos.run.place -->
+                <div style="margin-top: 12px;">
+                    <script language="JavaScript" type="text/javascript" src="https://gnrcounter.com"></script>
+                    <noscript>
+                        <a href="https://gnrcounter.com" title="Web Analytics" target="_blank"><img src="https://gnrcounter.com" alt="Analytics" border="0"></a>
+                    </noscript>
+                </div>
+                <!-- End of gnrcounter.com Code -->
+            </div>
             <div class="footer-links" style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
                 <a href="https://google.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
                     <img src="./icon/google.png" alt="Google" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>Google</span>
@@ -167,14 +175,14 @@
                 <a href="https://youtube.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
                     <img src="./icon/youtube.png" alt="YouTube" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>YouTube</span>
                 </a>
-                <a href="https://github.com/nugasnugis" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
+                <a href="https://github.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
                     <img src="./icon/github.png" alt="GitHub" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>GitHub</span>
                 </a>
-                <a href="http://dnsexit.com"><img src="http://dnsexit.com/images/dns.gif" border=0></a>
+                <a href="http://dnsexit.com" target="_blank"><img src="http://dnsexit.com" border="0" alt="DNSExit Status"></a>
             </div>
         </div>
     </footer>
 
-    <script src="./script.js?v=7"></script>
+    <script src="./script.js?v=8"></script>
 </body>
 </html>
