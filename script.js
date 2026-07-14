@@ -28,6 +28,7 @@ function jumpToSlide(i) {
     currentIndex = i;
 }
 
+// Automatic Touch-Swipe Track Handlers
 function startAutoSwipe() { autoSwipeTimer = setInterval(() => { slideCarousel(1); }, 4000); }
 function resetAutoSwipeTimer() { clearInterval(autoSwipeTimer); startAutoSwipe(); }
 
@@ -76,61 +77,61 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
-fetch('config.json')
-    .then(res => res.json())
-    .then(data => {
-        document.querySelectorAll('.main-dl-btn, #hero-dl-btn, .nav-dl-btn').forEach(b => { 
-            b.removeAttribute('href'); b.setAttribute('onclick', 'showReleases()');
-            if(b.id === 'hero-dl-btn') b.innerText = `Download AxelOS ${data.latest_version}`;
-        });
-        document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
-        document.getElementById('spec-cpu').innerText = data.requirements.cpu;
-        document.getElementById('spec-ram').innerText = data.requirements.ram;
-        document.getElementById('spec-storage').innerText = data.requirements.storage;
-        document.getElementById('spec-gpu').innerText = data.requirements.gpu;
-
-        screenshots = data.webss || [];
-        const track = document.getElementById('slider-track'), dots = document.getElementById('dots-container');
-        if(track && dots && screenshots.length > 0) {
-            track.innerHTML = ''; dots.innerHTML = '';
-            screenshots.forEach((f, idx) => {
-                track.innerHTML += `<div class="slide-pane"><img src="webss/${f}" alt="${f}"></div>`;
-                dots.innerHTML += `<span class="ind-dot ${idx===0?'active':''}" onclick="jumpToSlide(${idx}); resetAutoSwipeTimer();"></span>`;
-            });
-            document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
-        }
-
-        // ? FAIL-SAFE SEAMLESS ROW GENERATOR FROM CONFIG
-        const container = document.getElementById('history-rows');
-        if (container) {
-            container.innerHTML = '';
-            data.history.forEach(item => {
-                let badgeClass = 'badge-legacy';
-                let currentStatus = item.status ? String(item.status).toLowerCase() : 'active';
-                if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
-                else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
-                
-                let directLink = item.download_link || data.download_url || '#';
-                
-                container.innerHTML += `
-                    <tr>
-                        <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
-                        <td style="padding: 16px 12px;">${item.date}</td>
-                        <td style="padding: 16px 12px; font-style:italic;">"${item.codename}"</td>
-                        <td style="padding: 16px 12px; line-height:1.6;">${item.updates}</td>
-                        <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${item.status}</span></td>
-                        <td style="padding: 16px 12px; text-align:center;">
-                            <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
-                                <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
-                            </a>
-                        </td>
-                    </tr>`;
-            });
-        }
-        startAutoSwipe();
-    }).catch(err => console.error("Configuration mapping exception loop handle:", err));
-
+// ? DOMCONTENTLOADED WRAPPER: Guarantees the browser reads the table tags BEFORE drawing rows
 document.addEventListener("DOMContentLoaded", () => {
+    fetch('config.json')
+        .then(res => res.json())
+        .then(data => {
+            document.querySelectorAll('.main-dl-btn, #hero-dl-btn, .nav-dl-btn').forEach(b => { 
+                b.removeAttribute('href'); b.setAttribute('onclick', 'showReleases()');
+                if(b.id === 'hero-dl-btn') b.innerText = `Download AxelOS ${data.latest_version}`;
+            });
+            document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
+            document.getElementById('spec-cpu').innerText = data.requirements.cpu;
+            document.getElementById('spec-ram').innerText = data.requirements.ram;
+            document.getElementById('spec-storage').innerText = data.requirements.storage;
+            document.getElementById('spec-gpu').innerText = data.requirements.gpu;
+
+            screenshots = data.webss || [];
+            const track = document.getElementById('slider-track'), dots = document.getElementById('dots-container');
+            if(track && dots && screenshots.length > 0) {
+                track.innerHTML = ''; dots.innerHTML = '';
+                screenshots.forEach((f, idx) => {
+                    track.innerHTML += `<div class="slide-pane"><img src="webss/${f}" alt="${f}"></div>`;
+                    dots.innerHTML += `<span class="ind-dot ${idx===0?'active':''}" onclick="jumpToSlide(${idx}); resetAutoSwipeTimer();"></span>`;
+                });
+                document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
+            }
+
+            const container = document.getElementById('history-rows');
+            if (container) {
+                container.innerHTML = '';
+                data.history.forEach(item => {
+                    let badgeClass = 'badge-legacy';
+                    const currentStatus = item.status.toLowerCase();
+                    if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
+                    else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
+                    
+                    let directLink = item.download_link || data.download_url;
+                    
+                    container.innerHTML += `
+                        <tr>
+                            <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
+                            <td style="padding: 16px 12px;">${item.date}</td>
+                            <td style="padding: 16px 12px; font-style:italic;">"${item.codename}"</td>
+                            <td style="padding: 16px 12px; line-height:1.6;">${item.updates}</td>
+                            <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${item.status}</span></td>
+                            <td style="padding: 16px 12px; text-align:center;">
+                                <a href="${directLink}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
+                                    <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
+                                </a>
+                            </td>
+                        </tr>`;
+                });
+            }
+            startAutoSwipe();
+        }).catch(err => console.error("Config array data fetch exception breakdown loop:", err));
+
     if(window.location.hash === "#guide") showGuide();
     if(window.location.hash === "#releases") showReleases();
 });
