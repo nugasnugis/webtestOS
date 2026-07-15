@@ -77,7 +77,7 @@ window.addEventListener("popstate", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Step A: Load homepage layout options from config.json cleanly
+    // Fetches your centralized properties safely using root-relative syntax parameters
     fetch('./config.json')
         .then(res => res.json())
         .then(data => {
@@ -101,77 +101,36 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
             }
-            startAutoSwipe();
-        }).catch(err => console.error("Config load error:", err));
 
-    // ? Step B: LIVE RELEASES ENGINE - Fetches your real releases directly from GitHub API
-    const container = document.getElementById('history-rows');
-    if (container) {
-        container.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px;">Scanning GitHub repository release nodes...</td></tr>';
-        
-        fetch(`https://github.com{username}/${repo}/releases`)
-            .then(res => res.json())
-            .then(releases => {
-                if(!releases || releases.length === 0) {
-                    container.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px;">No active releases found in this repository.</td></tr>';
-                    return;
-                }
-                
-                container.innerHTML = ''; // Clear loading indicator text
-                
-                // Loops through EVERY release present on your GitHub account automatically
-                releases.forEach((release, index) => {
-                    let versionTag = release.tag_name;
+            // ? 100% UNBREAKABLE ROW BUILDER LOOP: Reads purely from config.json history
+            const container = document.getElementById('history-rows');
+            if (container && data.history) {
+                container.innerHTML = '';
+                data.history.forEach(item => {
+                    let badgeClass = 'badge-legacy';
+                    let currentStatus = String(item.status).toLowerCase();
+                    if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
+                    else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
                     
-                    // Format the live timestamp cleanly (e.g. "July 15, 2026")
-                    let builtDate = new Date(release.published_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+                    let directLink = item.download_link || data.download_url || '#';
                     
-                    // Separate latest release from legacy or prerelease targets
-                    let statusLabel = index === 0 ? "Latest Release" : "Old Release";
-                    let badgeClass = index === 0 ? "badge-active" : "badge-legacy";
-                    if(release.prerelease) {
-                        statusLabel = "Pre-Release / Nightly";
-                        badgeClass = "badge-supported";
-                    }
-                    
-                    // Extract changelog text details directly from GitHub release body description box
-                    let changelogText = release.body ? release.body : "No changelog descriptions logged for this build.";
-                    
-                    // Look inside files for any payload ending with .iso
-                    let isoAsset = release.assets.find(asset => asset.name.endsWith('.iso'));
-                    let buttonHtml = '';
-                    
-                    if(isoAsset) {
-                        let sizeMb = (isoAsset.size / (1024 * 1024)).toFixed(0);
-                        buttonHtml = `
-                            <a href="${isoAsset.browser_download_url}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
-                                <i class="fas fa-compact-disc" style="margin-right:6px;"></i>ISO (${sizeMb} MB)
-                            </a>`;
-                    } else {
-                        // Fallback target link if no standalone .iso file is uploaded yet
-                        buttonHtml = `
-                            <a href="${release.html_url}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none; background:#64748b;" target="_blank">
-                                <i class="fas fa-external-link-alt" style="margin-right:6px;"></i>View Source
-                            </a>`;
-                    }
-                    
-                    // Append the fresh row straight to the DOM structure mesh
                     container.innerHTML += `
                         <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 16px 12px; font-weight:700; color:inherit;">${versionTag}</td>
-                            <td style="padding: 16px 12px;">${builtDate}</td>
-                            <td style="padding: 16px 12px; font-style:italic;">"AxelOS Build"</td>
-                            <td style="padding: 16px 12px; line-height:1.6;">${changelogText}</td>
-                            <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${statusLabel}</span></td>
-                            <td style="padding: 16px 12px; text-align:center;">${buttonHtml}</td>
+                            <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
+                            <td style="padding: 16px 12px;">${item.date}</td>
+                            <td style="padding: 16px 12px; font-style:italic;">"${item.codename}"</td>
+                            <td style="padding: 16px 12px; line-height:1.6;">${item.updates}</td>
+                            <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${item.status}</span></td>
+                            <td style="padding: 16px 12px; text-align:center;">
+                                <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
+                                    <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
+                                </a>
+                            </td>
                         </tr>`;
                 });
-            })
-            .catch(err => {
-                console.error("GitHub API error:", err);
-                container.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:24px; color:#ef4444;">Failed to sync with GitHub API repository.</td></tr>';
-            });
-    }
+            }
+            startAutoSwipe();
+        }).catch(err => console.error("Config array payload fetch exception block loop error:", err));
 
     if(window.location.hash === "#guide") showGuide();
     if(window.location.hash === "#releases") showReleases();
