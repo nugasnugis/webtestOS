@@ -76,10 +76,13 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
-// ? STABLE LIVE CONSOLE DATA CONNECTOR (Reads completely from config.json)
 document.addEventListener("DOMContentLoaded", () => {
-    fetch('config.json')
-        .then(res => res.json())
+    // ? CORRECTED LOWERCASE PATH ROUTING (Matches config.json exactly)
+    fetch('./config.json')
+        .then(res => {
+            if(!res.ok) throw new Error("HTTP path fetch error");
+            return res.json();
+        })
         .then(data => {
             document.querySelectorAll('.main-dl-btn, #hero-dl-btn, .nav-dl-btn').forEach(b => { 
                 b.removeAttribute('href'); b.setAttribute('onclick', 'showReleases()');
@@ -124,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
             startAutoSwipe();
-        }).catch(err => console.error("Configuration payload map breakdown loop:", err));
+        }).catch(err => console.error("Critical path resolution lookup error logs:", err));
 
     if(window.location.hash === "#guide") showGuide();
     if(window.location.hash === "#releases") showReleases();
