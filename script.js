@@ -102,25 +102,38 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
             }
 
-            // ? 100% UNBREAKABLE ROW BUILDER LOOP: Reads purely from config.json history
+            // ? CRASH-PROOF MANUAL DATA TABLE RENDERER
             const container = document.getElementById('history-rows');
             if (container && data.history) {
                 container.innerHTML = '';
+                
                 data.history.forEach(item => {
+                    // Safe string fallbacks to completely eliminate background javascript engine crashes
+                    let versionText = item.version ? String(item.version) : 'v1.0';
+                    let dateText = item.date ? String(item.date) : 'N/A';
+                    let codenameText = item.codename ? String(item.codename) : 'Unnamed Build';
+                    let updatesText = item.updates ? String(item.updates) : 'Core system adjustments applied.';
+                    let statusText = item.status ? String(item.status) : 'Active';
+                    
+                    // Fail-safe badge logic that will never throw an exception
                     let badgeClass = 'badge-legacy';
-                    let currentStatus = String(item.status).toLowerCase();
-                    if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
-                    else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
+                    let checkStatus = statusText.toLowerCase();
+                    if (checkStatus.includes('latest') || checkStatus.includes('active')) {
+                        badgeClass = 'badge-active';
+                    } else if (checkStatus.includes('nightly') || checkStatus.includes('pre-release')) {
+                        badgeClass = 'badge-supported';
+                    }
                     
                     let directLink = item.download_link || data.download_url || '#';
                     
+                    // Injecting the raw table grid block elements safely
                     container.innerHTML += `
                         <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
-                            <td style="padding: 16px 12px;">${item.date}</td>
-                            <td style="padding: 16px 12px; font-style:italic;">"${item.codename}"</td>
-                            <td style="padding: 16px 12px; line-height:1.6;">${item.updates}</td>
-                            <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${item.status}</span></td>
+                            <td style="padding: 16px 12px; font-weight:700; color:inherit;">${versionText}</td>
+                            <td style="padding: 16px 12px;">${dateText}</td>
+                            <td style="padding: 16px 12px; font-style:italic;">"${codenameText}"</td>
+                            <td style="padding: 16px 12px; line-height:1.6;">${updatesText}</td>
+                            <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${statusText}</span></td>
                             <td style="padding: 16px 12px; text-align:center;">
                                 <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
                                     <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
@@ -129,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </tr>`;
                 });
             }
+
             startAutoSwipe();
         }).catch(err => console.error("Config array payload fetch exception block loop error:", err));
 
