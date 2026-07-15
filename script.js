@@ -76,6 +76,7 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
+// ? STABLE LIVE CONSOLE DATA CONNECTOR (Reads completely from config.json)
 document.addEventListener("DOMContentLoaded", () => {
     fetch('config.json')
         .then(res => res.json())
@@ -101,12 +102,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
             }
 
-            // ? INDESTRUCTIBLE DIRECT INJECTION LAYER: No room for code failure
             const container = document.getElementById('history-rows');
             if (container && data.history) {
                 container.innerHTML = '';
                 data.history.forEach(item => {
                     let directLink = item.download_link || data.download_url || '#';
+                    
                     container.innerHTML += `
                         <tr style="border-bottom: 1px solid #e2e8f0;">
                             <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
@@ -123,5 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
             startAutoSwipe();
-        }).catch(err => console.error("Data pipeline load error:", err));
+        }).catch(err => console.error("Configuration payload map breakdown loop:", err));
+
+    if(window.location.hash === "#guide") showGuide();
+    if(window.location.hash === "#releases") showReleases();
 });
