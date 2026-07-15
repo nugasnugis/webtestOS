@@ -28,7 +28,6 @@ function jumpToSlide(i) {
     currentIndex = i;
 }
 
-// Automatic Touch-Swipe Track Handlers
 function startAutoSwipe() { autoSwipeTimer = setInterval(() => { slideCarousel(1); }, 4000); }
 function resetAutoSwipeTimer() { clearInterval(autoSwipeTimer); startAutoSwipe(); }
 
@@ -77,7 +76,6 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
-// ? DOMCONTENTLOADED WRAPPER: Guarantees the browser reads the table tags BEFORE drawing rows
 document.addEventListener("DOMContentLoaded", () => {
     fetch('config.json')
         .then(res => res.json())
@@ -103,26 +101,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
             }
 
+            // ? INDESTRUCTIBLE DIRECT INJECTION LAYER: No room for code failure
             const container = document.getElementById('history-rows');
-            if (container) {
+            if (container && data.history) {
                 container.innerHTML = '';
                 data.history.forEach(item => {
-                    let badgeClass = 'badge-legacy';
-                    const currentStatus = item.status.toLowerCase();
-                    if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
-                    else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
-                    
-                    let directLink = item.download_link || data.download_url;
-                    
+                    let directLink = item.download_link || data.download_url || '#';
                     container.innerHTML += `
-                        <tr>
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
                             <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
                             <td style="padding: 16px 12px;">${item.date}</td>
                             <td style="padding: 16px 12px; font-style:italic;">"${item.codename}"</td>
                             <td style="padding: 16px 12px; line-height:1.6;">${item.updates}</td>
-                            <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${item.status}</span></td>
+                            <td style="padding: 16px 12px;"><span class="badge badge-active">${item.status}</span></td>
                             <td style="padding: 16px 12px; text-align:center;">
-                                <a href="${directLink}" class="btn" style="padding:6px 12px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
+                                <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
                                     <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
                                 </a>
                             </td>
@@ -130,8 +123,5 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
             startAutoSwipe();
-        }).catch(err => console.error("Config array data fetch exception breakdown loop:", err));
-
-    if(window.location.hash === "#guide") showGuide();
-    if(window.location.hash === "#releases") showReleases();
+        }).catch(err => console.error("Data pipeline load error:", err));
 });
