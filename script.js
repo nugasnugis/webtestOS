@@ -54,7 +54,6 @@ function showHome(a = null) {
     if(a) { setTimeout(() => { const t = document.querySelector(a); if(t) t.scrollIntoView({ behavior: 'smooth' }); }, 50); } else { window.scrollTo({top:0}); }
     setTimeout(updateCarouselIndicators, 100);
 }
-
 function toggleTheme() {
     const b = document.body; b.classList.toggle('dark-mode');
     const icon = document.getElementById('theme-icon');
@@ -77,7 +76,6 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
-// ? IMMEDIATE EXECUTION PIPELINE: Bypasses the dead event listener trap
 fetch('./config.json')
     .then(res => res.json())
     .then(data => {
@@ -102,7 +100,7 @@ fetch('./config.json')
             document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
         }
 
-        // ? 100% RELIABLE PURE CONFIG LOOP INJECTION
+        // ? COLOR-FIXED TABLE INJECTION LOOP
         const container = document.getElementById('history-rows');
         if (container && data.history) {
             container.innerHTML = '';
@@ -114,24 +112,24 @@ fetch('./config.json')
                 
                 let directLink = item.download_link || data.download_url || '#';
                 
+                // Added explicit dark charcoal color inline styles to override CSS transparency bugs
                 container.innerHTML += `
-                    <tr style="border-bottom: 1px solid #e2e8f0;">
-                        <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
-                        <td style="padding: 16px 12px;">${item.date}</td>
-                        <td style="padding: 16px 12px; font-style:italic;">"${item.codename}"</td>
-                        <td style="padding: 16px 12px; line-height:1.6;">${item.updates}</td>
-                        <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${item.status}</span></td>
+                    <tr style="border-bottom: 1px solid #e2e8f0; color: #1e293b !important;">
+                        <td style="padding: 16px 12px; font-weight:700; color: #1e293b !important;">${item.version}</td>
+                        <td style="padding: 16px 12px; color: #334155 !important;">${item.date}</td>
+                        <td style="padding: 16px 12px; font-style:italic; color: #475569 !important;">"${item.codename}"</td>
+                        <td style="padding: 16px 12px; line-height:1.6; color: #334155 !important;">${item.updates}</td>
+                        <td style="padding: 16px 12px;"><span class="badge ${badgeClass}" style="color: #ffffff !important; display: inline-block;">${item.status}</span></td>
                         <td style="padding: 16px 12px; text-align:center;">
-                            <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
-                                <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
+                            <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none; background: #2563eb; color: #ffffff !important;" target="_blank">
+                                <i class="fas fa-compact-disc" style="margin-right:6px; color: #ffffff !important;"></i>Download ISO
                             </a>
                         </td>
                     </tr>`;
             });
         }
         startAutoSwipe();
-    }).catch(err => console.error("Config reading error tracking:", err));
+    }).catch(err => console.error("Config load error tracking:", err));
 
-// Initial route routing sync on immediate load
 if(window.location.hash === "#guide") showGuide();
 if(window.location.hash === "#releases") showReleases();
