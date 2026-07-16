@@ -54,6 +54,7 @@ function showHome(a = null) {
     if(a) { setTimeout(() => { const t = document.querySelector(a); if(t) t.scrollIntoView({ behavior: 'smooth' }); }, 50); } else { window.scrollTo({top:0}); }
     setTimeout(updateCarouselIndicators, 100);
 }
+
 function toggleTheme() {
     const b = document.body; b.classList.toggle('dark-mode');
     const icon = document.getElementById('theme-icon');
@@ -76,76 +77,61 @@ window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Fetches your centralized properties safely using root-relative syntax parameters
-    fetch('./config.json')
-        .then(res => res.json())
-        .then(data => {
-            document.querySelectorAll('.main-dl-btn, #hero-dl-btn, .nav-dl-btn').forEach(b => { 
-                b.removeAttribute('href'); b.setAttribute('onclick', 'showReleases()');
-                if(b.id === 'hero-dl-btn') b.innerText = `Download AxelOS ${data.latest_version}`;
+// ? IMMEDIATE EXECUTION PIPELINE: Bypasses the dead event listener trap
+fetch('./config.json')
+    .then(res => res.json())
+    .then(data => {
+        document.querySelectorAll('.main-dl-btn, #hero-dl-btn, .nav-dl-btn').forEach(b => { 
+            b.removeAttribute('href'); b.setAttribute('onclick', 'showReleases()');
+            if(b.id === 'hero-dl-btn') b.innerText = `Download AxelOS ${data.latest_version}`;
+        });
+        document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
+        document.getElementById('spec-cpu').innerText = data.requirements.cpu;
+        document.getElementById('spec-ram').innerText = data.requirements.ram;
+        document.getElementById('spec-storage').innerText = data.requirements.storage;
+        document.getElementById('spec-gpu').innerText = data.requirements.gpu;
+
+        screenshots = data.webss || [];
+        const track = document.getElementById('slider-track'), dots = document.getElementById('dots-container');
+        if(track && dots && screenshots.length > 0) {
+            track.innerHTML = ''; dots.innerHTML = '';
+            screenshots.forEach((f, idx) => {
+                track.innerHTML += `<div class="slide-pane"><img src="webss/${f}" alt="${f}"></div>`;
+                dots.innerHTML += `<span class="ind-dot ${idx===0?'active':''}" onclick="jumpToSlide(${idx}); resetAutoSwipeTimer();"></span>`;
             });
-            document.getElementById('tag-ver').innerText = `Introducing AxelOS ${data.latest_version}`;
-            document.getElementById('spec-cpu').innerText = data.requirements.cpu;
-            document.getElementById('spec-ram').innerText = data.requirements.ram;
-            document.getElementById('spec-storage').innerText = data.requirements.storage;
-            document.getElementById('spec-gpu').innerText = data.requirements.gpu;
+            document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
+        }
 
-            screenshots = data.webss || [];
-            const track = document.getElementById('slider-track'), dots = document.getElementById('dots-container');
-            if(track && dots && screenshots.length > 0) {
-                track.innerHTML = ''; dots.innerHTML = '';
-                screenshots.forEach((f, idx) => {
-                    track.innerHTML += `<div class="slide-pane"><img src="webss/${f}" alt="${f}"></div>`;
-                    dots.innerHTML += `<span class="ind-dot ${idx===0?'active':''}" onclick="jumpToSlide(${idx}); resetAutoSwipeTimer();"></span>`;
-                });
-                document.getElementById('screen-title').innerText = cleanImageTitle(screenshots);
-            }
-
-            // ? CRASH-PROOF MANUAL DATA TABLE RENDERER
-            const container = document.getElementById('history-rows');
-            if (container && data.history) {
-                container.innerHTML = '';
+        // ? 100% RELIABLE PURE CONFIG LOOP INJECTION
+        const container = document.getElementById('history-rows');
+        if (container && data.history) {
+            container.innerHTML = '';
+            data.history.forEach(item => {
+                let badgeClass = 'badge-legacy';
+                let currentStatus = String(item.status).toLowerCase();
+                if (currentStatus.includes('latest') || currentStatus === 'active') badgeClass = 'badge-active';
+                else if (currentStatus.includes('nightly') || currentStatus.includes('pre-release')) badgeClass = 'badge-supported';
                 
-                data.history.forEach(item => {
-                    // Safe string fallbacks to completely eliminate background javascript engine crashes
-                    let versionText = item.version ? String(item.version) : 'v1.0';
-                    let dateText = item.date ? String(item.date) : 'N/A';
-                    let codenameText = item.codename ? String(item.codename) : 'Unnamed Build';
-                    let updatesText = item.updates ? String(item.updates) : 'Core system adjustments applied.';
-                    let statusText = item.status ? String(item.status) : 'Active';
-                    
-                    // Fail-safe badge logic that will never throw an exception
-                    let badgeClass = 'badge-legacy';
-                    let checkStatus = statusText.toLowerCase();
-                    if (checkStatus.includes('latest') || checkStatus.includes('active')) {
-                        badgeClass = 'badge-active';
-                    } else if (checkStatus.includes('nightly') || checkStatus.includes('pre-release')) {
-                        badgeClass = 'badge-supported';
-                    }
-                    
-                    let directLink = item.download_link || data.download_url || '#';
-                    
-                    // Injecting the raw table grid block elements safely
-                    container.innerHTML += `
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 16px 12px; font-weight:700; color:inherit;">${versionText}</td>
-                            <td style="padding: 16px 12px;">${dateText}</td>
-                            <td style="padding: 16px 12px; font-style:italic;">"${codenameText}"</td>
-                            <td style="padding: 16px 12px; line-height:1.6;">${updatesText}</td>
-                            <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${statusText}</span></td>
-                            <td style="padding: 16px 12px; text-align:center;">
-                                <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
-                                    <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
-                                </a>
-                            </td>
-                        </tr>`;
-                });
-            }
+                let directLink = item.download_link || data.download_url || '#';
+                
+                container.innerHTML += `
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="padding: 16px 12px; font-weight:700; color:inherit;">${item.version}</td>
+                        <td style="padding: 16px 12px;">${item.date}</td>
+                        <td style="padding: 16px 12px; font-style:italic;">"${item.codename}"</td>
+                        <td style="padding: 16px 12px; line-height:1.6;">${item.updates}</td>
+                        <td style="padding: 16px 12px;"><span class="badge ${badgeClass}">${item.status}</span></td>
+                        <td style="padding: 16px 12px; text-align:center;">
+                            <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block; text-decoration:none;" target="_blank">
+                                <i class="fas fa-compact-disc" style="margin-right:6px;"></i>Download ISO
+                            </a>
+                        </td>
+                    </tr>`;
+            });
+        }
+        startAutoSwipe();
+    }).catch(err => console.error("Config reading error tracking:", err));
 
-            startAutoSwipe();
-        }).catch(err => console.error("Config array payload fetch exception block loop error:", err));
-
-    if(window.location.hash === "#guide") showGuide();
-    if(window.location.hash === "#releases") showReleases();
-});
+// Initial route routing sync on immediate load
+if(window.location.hash === "#guide") showGuide();
+if(window.location.hash === "#releases") showReleases();
