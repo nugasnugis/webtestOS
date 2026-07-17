@@ -83,7 +83,7 @@ function drawReleaseRows(historyArray, customUrl) {
     
     let htmlOutput = '';
     
-    // ? Bright, high-contrast color matrix map for all status types
+    // ? High-contrast color matrix map for status types
     const themeMap = {
         'latest':   { text: '#166534', bg: '#bbf7d0', cls: 'badge-active' },    // Rich Emerald Green
         'active':   { text: '#166534', bg: '#bbf7d0', cls: 'badge-active' },    // Rich Emerald Green
@@ -92,33 +92,38 @@ function drawReleaseRows(historyArray, customUrl) {
         'legacy':   { text: '#1e293b', bg: '#cbd5e1', cls: 'badge-legacy' }     // Clear Charcoal Slate
     };
 
-    historyArray.forEach(item => {
-        let currentStatus = String(item.status || 'legacy').toLowerCase().trim();
-        
-        // Find matching status colors, or fall back to legacy if it's a unique word
-        let config = themeMap[currentStatus] || themeMap['legacy'];
-        
-        // Dynamic styling string using the map color variables
-        let badgeStyles = `color: ${config.text} !important; background-color: ${config.bg} !important; font-weight: 800; padding: 4px 12px; border-radius: 9999px; display: inline-block !important; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px;`;
-        
-        let directLink = item.download_link || customUrl || '#';
-        
-        htmlOutput += `
-            <tr style="border-bottom: 1px solid #e2e8f0 !important; color: #1e293b !important; display: table-row !important;">
-                <td style="padding: 16px 12px; font-weight:700; color: #1e293b !important; display: table-cell !important;">${item.version}</td>
-                <td style="padding: 16px 12px; color: #334155 !important; display: table-cell !important;">${item.date}</td>
-                <td style="padding: 16px 12px; font-style:italic; color: #475569 !important; display: table-cell !important;">"${item.codename}"</td>
-                <td style="padding: 16px 12px; line-height:1.6; color: #334155 !important; display: table-cell !important;">${item.updates}</td>
-                <td style="padding: 16px 12px; display: table-cell !important;"><span class="${config.cls}" style="${badgeStyles}">${item.status}</span></td>
-                <td style="padding: 16px 12px; text-align:center; display: table-cell !important;">
-                    <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block !important; text-decoration:none; background: #2563eb !important; color: #ffffff !important;" target="_blank">
-                        <i class="fas fa-compact-disc" style="margin-right:6px; color: #ffffff !important;"></i>Download ISO
-                    </a>
-                </td>
-            </tr>`;
-    });
+    // Ensure historyArray is valid before trying to loop
+    if (Array.isArray(historyArray)) {
+        historyArray.forEach(item => {
+            // Clean up the status text to prevent system crashes
+            let rawStatus = item.status || 'legacy';
+            let currentStatus = String(rawStatus).toLowerCase().trim();
+            
+            // ? CRASH PROTECTION: If your status is a typo (like "latesdt"), fallback gracefully to legacy gray instead of breaking!
+            let config = themeMap[currentStatus] || themeMap['legacy'];
+            
+            let badgeStyles = `color: ${config.text} !important; background-color: ${config.bg} !important; font-weight: 800; padding: 4px 12px; border-radius: 9999px; display: inline-block !important; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px;`;
+            
+            let directLink = item.download_link || customUrl || '#';
+            
+            htmlOutput += `
+                <tr style="border-bottom: 1px solid #e2e8f0 !important; color: #1e293b !important; display: table-row !important;">
+                    <td style="padding: 16px 12px; font-weight:700; color: #1e293b !important; display: table-cell !important;">${item.version || 'Unknown'}</td>
+                    <td style="padding: 16px 12px; color: #334155 !important; display: table-cell !important;">${item.date || ''}</td>
+                    <td style="padding: 16px 12px; font-style:italic; color: #475569 !important; display: table-cell !important;">"${item.codename || ''}"</td>
+                    <td style="padding: 16px 12px; line-height:1.6; color: #334155 !important; display: table-cell !important;">${item.updates || ''}</td>
+                    <td style="padding: 16px 12px; display: table-cell !important;"><span class="${config.cls}" style="${badgeStyles}">${rawStatus}</span></td>
+                    <td style="padding: 16px 12px; text-align:center; display: table-cell !important;">
+                        <a href="${directLink}" class="btn" style="padding:6px 14px; font-size:13px; font-weight:600; border-radius:6px; display:inline-block !important; text-decoration:none; background: #2563eb !important; color: #ffffff !important;" target="_blank">
+                            <i class="fas fa-compact-disc" style="margin-right:6px; color: #ffffff !important;"></i>Download ISO
+                        </a>
+                    </td>
+                </tr>`;
+        });
+    }
     targetContainer.innerHTML = htmlOutput;
 }
+
 
 // Execution Pipeline with fail-safe visual backup mechanism built in
 fetch('./config.json')
