@@ -24,6 +24,14 @@
       "updates": "First Release.",
       "status": "Nightly",
       "download_link": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
+    },
+    {
+      "version": "v16.0 (Latest)",
+      "date": "July 2026",
+      "codename": "Zena",
+      "updates": "First Release.",
+      "status": "latest",
+      "download_link": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
     }
   ]
 }
