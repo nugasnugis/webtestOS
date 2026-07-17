@@ -16,15 +16,25 @@
     <nav>
         <div class="container nav-flex">
             <div onclick="showHome()" class="logo-text">AxelOS</div>
-            <div class="nav-links">
-                <a onclick="showHome('#features')">Features</a>
-                <a onclick="showHome('#about')">About</a>
-                <a onclick="showGuide()">Install Guide</a>
-                <a onclick="showReleases()">Releases & Downloads</a>
+            <div class="nav-links" style="display: flex; align-items: center;">
+                <a id="nav-feat" onclick="showHome('#features')">Features</a>
+                <a id="nav-about" onclick="showHome('#about')">About</a>
+                <a id="nav-guide" onclick="showGuide()">Install Guide</a>
+                <a id="nav-rel" onclick="showReleases()">Releases & Downloads</a>
+                
+                <!-- Compact Language Selector Integrated directly inside your styling classes -->
+                <div class="lang-container" style="position: relative; display: inline-block; margin: 0 4px;">
+                    <select id="lang-selector" onchange="changeLanguage(this.value)" style="padding: 6px 12px; font-size: 13px; font-weight: 700; color: inherit; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); border-radius: 6px; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; padding-right: 24px;">
+                        <option value="en">?? EN</option>
+                        <option value="id">?? ID</option>
+                    </select>
+                    <i class="fas fa-chevron-down" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 9px; opacity: 0.7; pointer-events: none;"></i>
+                </div>
+
                 <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
                     <svg style="width:20px; height:20px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="theme-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14.5 12a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path></svg>
                 </button>
-                <a onclick="showReleases()" class="nav-dl-btn btn">Download</a>
+                <a id="nav-dl" onclick="showReleases()" class="nav-dl-btn btn">Download</a>
             </div>
         </div>
     </nav>
