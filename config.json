@@ -1,8 +1,8 @@
 {
   "username": "nugasnugis",
   "repo": "AxelOS",
-  "latest_version": "v1.0",
-  "download_url": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso",
+  "latest_version": "v1.06",
+  "download_url": "https://github.com/nugsssddddeedasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso",
   "webss": [
     "desktop-workspace.png",
     "my_gaming_setup.jpg",
@@ -19,9 +19,9 @@
   "history": [
     {
       "version": "v1.10 (Latest)",
-      "date": "July 2026",
-      "codename": "Apex",
-      "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
+      "date": "Junly 2026",
+      "codename": "Aplex",
+      "updates": "Zen-tuned gaming kernel upgrade, completely over and ove hauled UI, new sandboxed terminal shell.",
       "status": "Test",
       "download_link": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
     }
