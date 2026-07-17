@@ -18,11 +18,11 @@
   },
   "history": [
     {
-      "version": "v1.10 (Latest)",
-      "date": "Junly 2026",
-      "codename": "Aplex",
-      "updates": "Zen-tuned gaming kernel upgrade, completely over and ove hauled UI, new sandboxed terminal shell.",
-      "status": "Test",
+      "version": "v1.0 (Latest)",
+      "date": "July 2026",
+      "codename": "Zena",
+      "updates": "First Release.",
+      "status": "Nightly",
       "download_link": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
     }
   ]
