@@ -22,7 +22,7 @@
       "date": "July 2026",
       "codename": "Apex",
       "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
-      "status": "latest",
+      "status": "Test",
       "download_link": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
     }
   ]
