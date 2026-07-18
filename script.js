@@ -35,7 +35,6 @@ if (document.getElementById('slider-track')) {
     document.getElementById('slider-track').addEventListener('touchstart', () => clearInterval(autoSwipeTimer));
     document.getElementById('slider-track').addEventListener('touchend', resetAutoSwipeTimer);
 }
-
 function toggleFaq(b) {
     const item = b.parentElement, panel = b.nextElementSibling, isOpening = !item.classList.contains('active');
     document.querySelectorAll('.faq-item').forEach(el => { 
@@ -123,81 +122,6 @@ function drawReleaseRows(historyArray, customUrl) {
     targetContainer.innerHTML = htmlOutput;
 }
 
-const languageMatrix = {
-    en: {
-        feat: "Features", about: "About", guide: "Install Guide", rel: "Releases & Downloads", dl: "Download",
-        gSub: "Everything you need to step away from Windows and power up your machine safely, even if you have never installed an operating system before.",
-        s1T: "Download & Get a USB Drive", s1D: "Grab the official AxelOS ISO file from our Releases Tab. Find a blank USB thumb drive with at least <b>8 GB</b> of storage capacity.",
-        s1W: "<strong>?? Warning:</strong> Plugging in the USB will erase its contents. Back up any personal files inside it first!",
-        s2T: "Flash the USB Installer", s2D: "Download a free program called <b>Rufus</b> (for Windows) or <b>BalenaEtcher</b> (for Mac/Linux). Open it, select your downloaded AxelOS ISO file, select your USB flash drive target, and hit <b>Flash / Start</b>.",
-        s3T: "Boot from your USB Drive", s3D: "Shut down your computer completely. Leave the USB plugged in. Turn it back on and start repeatedly pressing your system's <b>Boot Menu Key</b> (usually <b>F12, F11, F8, or Esc</b>). Select your USB drive.",
-        s4T: "Follow the Installer Wizard", s4D: "AxelOS will boot into preview. Click <b>'Install AxelOS'</b>. Follow the graphical menu options to choose your hard drive, setup your account password, and click deploy.",
-        faqs: [
-            { q: "Can I use AxelOS without erasing my Windows operating system?", a: "<b>Yes, absolutely!</b> Choose <b>'Install Alongside Windows'</b> (Dual Boot) on the partition setup window to run both systems safely on boot selection. Or run it risk-free in VirtualBox." },
-            { q: "Will AxelOS run cleanly on my old laptop from 2012?", a: "<b>Yes!</b> AxelOS is engineered lightweight. Old setups that lag on Windows feel fast again here. It requires a 64-bit CPU and at least 4 GB of RAM memory layout." },
-            { q: "Can I run Windows games and apps (.exe) on AxelOS?", a: "Yes. Use abstraction layer utilities like <b>Proton (via Steam)</b>, <b>Wine</b>, or <b>Bottles</b> to smoothly translate Windows applications." },
-            { q: "Do I need to be connected to the internet to run the installer?", a: "<b>No.</b> The setup image works offline. Wi-Fi setup is recommended during boot to fetch graphic updates, but it is not mandatory." }
-        ]
-    },
-    id: {
-        feat: "Fitur", about: "Tentang", guide: "Panduan Instal", rel: "Rilis & Unduhan", dl: "Unduh",
-        gSub: "Semua yang Anda butuhkan untuk meninggalkan Windows dan menyalakan mesin Anda dengan aman, bahkan jika Anda belum pernah menginstal sistem operasi sebelumnya.",
-        s1T: "Unduh & Siapkan USB Drive", s1D: "Ambil file ISO resmi AxelOS dari Tab Rilis kami. Cari USB flashdisk kosong dengan kapasitas minimal <b>8 GB</b>.",
-        s1W: "<strong>?? Peringatan:</strong> Memasukkan USB akan menghapus semua isinya. Cadangkan file pribadi Anda di dalamnya terlebih dahulu!",
-        s2T: "Flash Pemasang USB", s2D: "Unduh program gratis bernama <b>Rufus</b> (untuk Windows) or <b>BalenaEtcher</b> (untuk Mac/Linux). Buka aplikasinya, pilih file ISO AxelOS yang diunduh, pilih USB drive Anda, lalu klik <b>Flash / Mulai</b>.",
-        s3T: "Boot dari USB Drive Anda", s3D: "Matikan komputer Anda sepenuhnya. Biarkan USB terpasang. Nyalakan kembali komputer dan segera tekan berulang kali <b>Tombol Menu Booting</b> sistem Anda (biasanya <b>F12, F11, F8, atau Esc</b>). Pilih USB drive Anda.",
-        s4T: "Ikuti Wizard Pemasangan", s4D: "AxelOS akan masuk ke mode pratinjau desktop. Klik ikon berlabel <b>'Install AxelOS'</b>. Ikuti opsi menu grafis untuk memilih hard drive Anda, atur kata sandi akun Anda, lalu klik pasang.",
-        faqs: [
-            { q: "Apakah saya bisa menggunakan AxelOS tanpa menghapus sistem operasi Windows saya?", a: "<b>Ya, tentu saja!</b> Pilih opsi <b>'Instal Berdampingan dengan Windows'</b> (Dual Boot) di layar partisi untuk memilih OS saat komputer dinyalakan. Atau gunakan VirtualBox tanpa risiko." },
-            { q: "Apakah AxelOS dapat berjalan dengan lancar di laptop lama saya dari tahun 2012?", a: "<b>Ya!</b> AxelOS sangat ringan. Komputer lama dari tahun 2012 yang lambat di Windows akan terasa cepat kembali. Memerlukan CPU 64-bit dan RAM minimal 4 GB." },
-            { q: "Apakah saya bisa menjalankan game dan aplikasi Windows (.exe) di AxelOS?", a: "Ya. Gunakan alat kompatibilitas seperti <b>Proton (via Steam)</b>, <b>Wine</b>, atau <b>Bottles</b> untuk menjalankan game dan aplikasi Windows dengan lancar." },
-            { q: "Apakah saya harus terhubung ke internet untuk menjalankan pemasang?", a: "<b>Tidak.</b> Gambar setup USB AxelOS membawa semua file penting secara offline. Koneksi internet direkomendasikan untuk update otomatis tetapi tidak wajib." }
-        ]
-    }
-};
-function changeLanguage(langCode) {
-    const textData = languageMatrix[langCode] || languageMatrix['en'];
-    localStorage.setItem('selectedLanguage', langCode);
-
-    const nFeat = document.getElementById('nav-feat'); if(nFeat) nFeat.innerText = textData.feat;
-    const nAbout = document.getElementById('nav-about'); if(nAbout) nAbout.innerText = textData.about;
-    const nGuide = document.getElementById('nav-guide'); if(nGuide) nGuide.innerText = textData.guide;
-    const nRel = document.getElementById('nav-rel'); if(nRel) nRel.innerText = textData.rel;
-    const nDl = document.getElementById('nav-dl'); if(nDl) nDl.innerText = textData.dl;
-
-    const gSub = document.querySelector('#main-guide-content p'); if(gSub) gSub.innerText = textData.gSub;
-
-    const stepHeaders = document.querySelectorAll('#main-guide-content h3');
-    const stepParagraphs = document.querySelectorAll('#main-guide-content p');
-    if (stepHeaders.length >= 4 && stepParagraphs.length >= 5) {
-        stepHeaders[0].innerText = textData.s1T; stepParagraphs[1].innerHTML = textData.s1D;
-        stepHeaders[1].innerText = textData.s2T; stepParagraphs[2].innerHTML = textData.s2D;
-        stepHeaders[2].innerText = textData.s3T; stepParagraphs[3].innerHTML = textData.s3D;
-        stepHeaders[3].innerText = textData.s4T; stepParagraphs[4].innerHTML = textData.s4D;
-    }
-    const warnBox = document.querySelector('#main-guide-content div[style*="background: #fffbeb"]');
-    if(warnBox) warnBox.innerHTML = textData.s1W;
-
-    const faqContainer = document.querySelector('#main-guide-content div[style*="display: flex; flex-direction: column; gap: 12px"]');
-    if(faqContainer && textData.faqs) {
-        faqContainer.innerHTML = '';
-        textData.faqs.forEach(faqItem => {
-            faqContainer.innerHTML += `
-                <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s ease; overflow: hidden; background: #f8fafc;">
-                    <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: none; border: none; font-size: 15px; font-weight: 700; color: #1e293b; text-align: left; cursor: pointer; outline: none;">
-                        <span>${faqItem.q}</span>
-                        <i class="fas fa-chevron-down faq-arrow" style="font-size: 12px; color: #64748b; transition: transform 0.2s ease;"></i>
-                    </button>
-                    <div class="faq-panel" style="max-height: 0px; overflow: hidden; transition: max-height 0.25s ease-out; background: #ffffff;">
-                        <div style="padding: 20px; font-size: 14px; color: #475569; line-height: 1.6; border-top: 1px solid #e2e8f0;">
-                            ${faqItem.a}
-                        </div>
-                    </div>
-                </div>`;
-        });
-    }
-}
-
 fetch('./config.json')
     .then(res => res.json())
     .then(data => {
@@ -223,18 +147,53 @@ fetch('./config.json')
             const sTitle = document.getElementById('screen-title'); if(sTitle) sTitle.innerText = cleanImageTitle(screenshots);
         }
 
+        // ? DYNAMICALLY BUILD INSTALL GUIDE FROM CONFIG.JSON
+        const guideSub = document.querySelector('#main-guide-content p');
+        if(guideSub && data.install_guide.subtitle) guideSub.innerText = data.install_guide.subtitle;
+
+        const timelineContainer = document.querySelector('#main-guide-content div[style*="border-left: 3px solid"]');
+        if(timelineContainer && data.install_guide.steps) {
+            let guideHtml = '';
+            data.install_guide.steps.forEach(step => {
+                let bgCircle = step.is_success ? '#10b981' : '#2563eb';
+                let titleColor = step.is_success ? '#10b981' : '#0f172a';
+                let warningHtml = step.warning ? `<div style="background: #fffbeb; border-left: 4px solid #d97706; padding: 10px 14px; border-radius: 4px; font-size: 13px; color: #92400e; margin-top: 8px;">${step.warning}</div>` : '';
+                
+                guideHtml += `
+                    <div style="position: relative; margin-bottom: 32px;">
+                        <div style="position: absolute; left: -37px; top: 0; width: 24px; height: 24px; background: ${bgCircle}; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; border: 4px solid #fff;">${step.num}</div>
+                        <h3 style="font-size: 16px; font-weight: 700; color: ${titleColor}; margin-bottom: 6px;">${step.title}</h3>
+                        <p style="font-size: 14px; color: #475569; margin: 0; line-height: 1.5;">${step.description}</p>
+                        ${warningHtml}
+                    </div>`;
+            });
+            timelineContainer.innerHTML = guideHtml;
+        }
+
+        // ? DYNAMICALLY BUILD BEAUTIFUL FAQ ACCORDIONS FROM CONFIG.JSON
+        const faqContainer = document.querySelector('#main-guide-content div[style*="display: flex; flex-direction: column; gap: 12px"]');
+        if(faqContainer && data.faq) {
+            faqContainer.innerHTML = '';
+            data.faq.forEach(item => {
+                faqContainer.innerHTML += `
+                    <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s ease; overflow: hidden; background: #f8fafc;">
+                        <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: none; border: none; font-size: 15px; font-weight: 700; color: #1e293b; text-align: left; cursor: pointer; outline: none;">
+                            <span>${item.question}</span>
+                            <i class="fas fa-chevron-down faq-arrow" style="font-size: 12px; color: #64748b; transition: transform 0.2s ease;"></i>
+                        </button>
+                        <div class="faq-panel" style="max-height: 0px; overflow: hidden; transition: max-height 0.25s ease-out; background: #ffffff;">
+                            <div style="padding: 20px; font-size: 14px; color: #475569; line-height: 1.6; border-top: 1px solid #e2e8f0;">
+                                ${item.answer}
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
+
         if (data.history) { drawReleaseRows(data.history, data.download_url); }
         startAutoSwipe();
     })
-    .catch(err => {
-        console.error("Config missing tracking, running fallback:", err);
-        const fallbackHistory = [{ "version": "v1.0 (Latest)", "date": "July 2026", "codename": "Zena", "updates": "First Release.", "status": "Nightly", "download_link": "https://github.com" }];
-        drawReleaseRows(fallbackHistory, "https://github.com");
-    });
-
-const savedLang = localStorage.getItem('selectedLanguage') || 'en';
-document.getElementById('lang-selector').value = savedLang;
-setTimeout(() => { changeLanguage(savedLang); }, 150);
+    .catch(err => console.error("Config processing tracker crash:", err));
 
 if(window.location.hash === "#guide") showGuide();
 if(window.location.hash === "#releases") showReleases();
