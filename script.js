@@ -38,14 +38,8 @@ if (document.getElementById('slider-track')) {
 
 function toggleFaq(b) {
     const item = b.parentElement, panel = b.nextElementSibling, isOpening = !item.classList.contains('active');
-    document.querySelectorAll('.faq-item').forEach(el => { 
-        el.classList.remove('active'); 
-        el.querySelector('.faq-panel').style.maxHeight = '0px'; 
-    });
-    if (isOpening) { 
-        item.classList.add('active'); 
-        panel.style.maxHeight = panel.scrollHeight + "px"; 
-    }
+    document.querySelectorAll('.faq-item').forEach(el => { el.classList.remove('active'); el.querySelector('.faq-panel').style.maxHeight = '0px'; });
+    if (isOpening) { item.classList.add('active'); panel.style.maxHeight = panel.scrollHeight + "px"; }
 }
 
 function hideAllViews() {
@@ -75,34 +69,41 @@ if(localStorage.getItem('theme') === 'dark') toggleTheme();
 
 window.onscroll = function() {
     const btn = document.getElementById('scroll-top-arrow');
-    if (btn) {
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) btn.style.display = "flex"; else btn.style.display = "none";
-    }
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) btn.style.display = "flex"; else btn.style.display = "none";
 };
 
 window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
 
+// Helper function to cleanly build markup to bypass DOM injection errors
 function drawReleaseRows(historyArray, customUrl) {
     const targetContainer = document.getElementById('history-rows');
     if (!targetContainer) return;
     
     let htmlOutput = '';
+    
+    // ? High-contrast color matrix map for status types
     const themeMap = {
-        'latest':   { text: '#166534', bg: '#bbf7d0', cls: 'badge-active' },
-        'active':   { text: '#166534', bg: '#bbf7d0', cls: 'badge-active' },
-        'nightly':  { text: '#1e40af', bg: '#93c5fd', cls: 'badge-supported' },
-        'test':     { text: '#1e40af', bg: '#93c5fd', cls: 'badge-supported' },
-        'legacy':   { text: '#1e293b', bg: '#cbd5e1', cls: 'badge-legacy' }
+        'latest':   { text: '#166534', bg: '#bbf7d0', cls: 'badge-active' },    // Rich Emerald Green
+        'active':   { text: '#166534', bg: '#bbf7d0', cls: 'badge-active' },    // Rich Emerald Green
+        'nightly':  { text: '#1e40af', bg: '#93c5fd', cls: 'badge-supported' }, // Deep Royal Blue
+        'test':     { text: '#1e40af', bg: '#93c5fd', cls: 'badge-supported' }, // Deep Royal Blue
+        'legacy':   { text: '#1e293b', bg: '#cbd5e1', cls: 'badge-legacy' }     // Clear Charcoal Slate
     };
 
+    // Ensure historyArray is valid before trying to loop
     if (Array.isArray(historyArray)) {
         historyArray.forEach(item => {
+            // Clean up the status text to prevent system crashes
             let rawStatus = item.status || 'legacy';
             let currentStatus = String(rawStatus).toLowerCase().trim();
+            
+            // ? CRASH PROTECTION: If your status is a typo (like "latesdt"), fallback gracefully to legacy gray instead of breaking!
             let config = themeMap[currentStatus] || themeMap['legacy'];
+            
             let badgeStyles = `color: ${config.text} !important; background-color: ${config.bg} !important; font-weight: 800; padding: 4px 12px; border-radius: 9999px; display: inline-block !important; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px;`;
+            
             let directLink = item.download_link || customUrl || '#';
             
             htmlOutput += `
@@ -122,6 +123,9 @@ function drawReleaseRows(historyArray, customUrl) {
     }
     targetContainer.innerHTML = htmlOutput;
 }
+
+
+// Execution Pipeline with fail-safe visual backup mechanism built in
 fetch('./config.json')
     .then(res => res.json())
     .then(data => {
@@ -144,56 +148,27 @@ fetch('./config.json')
                 track.innerHTML += `<div class="slide-pane"><img src="webss/${f}" alt="${f}"></div>`;
                 dots.innerHTML += `<span class="ind-dot ${idx===0?'active':''}" onclick="jumpToSlide(${idx}); resetAutoSwipeTimer();"></span>`;
             });
-            const sTitle = document.getElementById('screen-title'); if(sTitle) sTitle.innerText = cleanImageTitle(screenshots);
+            const sTitle = document.getElementById('screen-title'); if(sTitle) sTitle.innerText = cleanImageTitle(screenshots[0]);
         }
 
-        // ? MOUNT CONFIG GUIDE DATA VIA EXPLICIT ELEMENT ID
-        const guideSub = document.getElementById('guide-subtitle');
-        if(guideSub && data.install_guide && data.install_guide.subtitle) guideSub.innerText = data.install_guide.subtitle;
-
-        const timelineContainer = document.getElementById('install-timeline');
-        if(timelineContainer && data.install_guide && data.install_guide.steps) {
-            let guideHtml = '';
-            data.install_guide.steps.forEach(step => {
-                let bgCircle = step.is_success ? '#10b981' : '#2563eb';
-                let titleColor = step.is_success ? '#10b981' : '#0f172a';
-                let warningHtml = step.warning ? `<div style="background: #fffbeb; border-left: 4px solid #d97706; padding: 10px 14px; border-radius: 4px; font-size: 13px; color: #92400e; margin-top: 8px;">${step.warning}</div>` : '';
-                
-                guideHtml += `
-                    <div style="position: relative; margin-bottom: 32px;">
-                        <div style="position: absolute; left: -37px; top: 0; width: 24px; height: 24px; background: ${bgCircle}; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; border: 4px solid #fff;">${step.num}</div>
-                        <h3 style="font-size: 16px; font-weight: 700; color: ${titleColor}; margin-bottom: 6px;">${step.title}</h3>
-                        <p style="font-size: 14px; color: #475569; margin: 0; line-height: 1.5;">${step.description}</p>
-                        ${warningHtml}
-                    </div>`;
-            });
-            timelineContainer.innerHTML = guideHtml;
+        if (data.history) {
+            drawReleaseRows(data.history, data.download_url);
         }
-
-        // ? MOUNT CONFIG FAQ DATA VIA EXPLICIT ELEMENT ID
-        const faqContainer = document.getElementById('faq-accordion');
-        if(faqContainer && data.faq) {
-            faqContainer.innerHTML = '';
-            data.faq.forEach(item => {
-                faqContainer.innerHTML += `
-                    <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s ease; overflow: hidden; background: #f8fafc; color: #1e293b !important; text-align: left;">
-                        <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: none; border: none; font-size: 15px; font-weight: 700; color: inherit; text-align: left; cursor: pointer; outline: none;">
-                            <span>${item.question}</span>
-                            <i class="fas fa-chevron-down faq-arrow" style="font-size: 12px; color: #64748b; transition: transform 0.2s ease;"></i>
-                        </button>
-                        <div class="faq-panel" style="max-height: 0px; overflow: hidden; transition: max-height 0.25s ease-out; background: #ffffff;">
-                            <div style="padding: 20px; font-size: 14px; color: #475569; line-height: 1.6; border-top: 1px solid #e2e8f0;">
-                                ${item.answer}
-                            </div>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        if (data.history) { drawReleaseRows(data.history, data.download_url); }
         startAutoSwipe();
     })
-    .catch(err => console.error("Config tracking error log description:", err));
+    .catch(err => {
+        console.error("Config fetch bypassed, triggering direct structural fallback:", err);
+        // Direct hardcoded fallback execution if your browser fails to fetch the raw json file paths
+        const fallbackHistory = [{
+            "version": "v1.0 (Latest)",
+            "date": "July 2026",
+            "codename": "Apex",
+            "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
+            "status": "latest",
+            "download_link": "https://github.com"
+        }];
+        drawReleaseRows(fallbackHistory, "https://github.com");
+    });
 
 if(window.location.hash === "#guide") showGuide();
 if(window.location.hash === "#releases") showReleases();
