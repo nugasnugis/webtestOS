@@ -112,33 +112,43 @@
         </section>
     </div>
 
-    <!-- View 2: Standalone Installation Guide -->
-    <div id="main-guide-content" class="page-view-container">
-        <div class="content-card-wrapper">
-            <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
-            <h1 style="margin-bottom: 24px;">Deployment & Installation Guide</h1>
-            <div class="step"><div class="step-num">Step 1</div><h3>Download Image</h3><p>Obtain the latest stable image and verify SHA256 checksums.</p></div>
-            <div class="step"><div class="step-num">Step 2</div><h3>Flash Target Media</h3><p>Use BalenaEtcher or Rufus to write the ISO to an 8GB+ USB drive.</p></div>
-            <div class="step"><div class="step-num">Step 3</div><h3>BIOS Setup</h3><p>Disable Secure Boot and assign USB storage priority rankings.</p></div>
-            <div class="step"><div class="step-num">Step 4</div><h3>Installation</h3><p>Boot from USB and follow the partitioning formatting disk setup wizard choices.</p></div>
-            
-            <div class="faq-section">
-                <h2 style="font-size:24px; font-weight:800; margin-bottom:28px; margin-top:50px; text-align:center;">Frequently Asked Questions</h2>
-                <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">Can I dual-boot AxelOS with Windows? <span class="faq-icon">+</span></button>
-                    <div class="faq-panel"><div class="faq-content">Yes! During Step 4 of the installation guide, select 'Install Alongside' to safely partition your drive without erasing your existing Windows data.</div></div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">Are anti-cheat gaming systems supported? <span class="faq-icon">+</span></button>
-                    <div class="faq-panel"><div class="faq-content">AxelOS includes kernel-level driver compatibility loops for Proton. Games using Valve Easy Anti-Cheat (EAC) and BattlEye load natively out of the box.</div></div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-trigger" onclick="toggleFaq(this)">Is this OS safe for beginners to use daily? <span class="faq-icon">+</span></button>
-                    <div class="faq-panel"><div class="faq-content">Absolutely. While it contains powerful tools for hacking and optimization, the desktop interface behaves exactly like a standard, user-friendly operating system.</div></div>
-                </div>
+    <!-- ? SECTION 2: GUIDE & FAQ VIEW CONTAINER -->
+    <div id="main-guide-content" class="page-view-container" style="display: none; max-width: 900px; margin: 40px auto; padding: 24px; font-family: system-ui, -apple-system, sans-serif;">
+        
+        <!-- Header Block -->
+        <div style="text-align: center; margin-bottom: 48px;">
+            <h1 style="font-size: 36px; font-weight: 800; color: #0f172a; margin-bottom: 12px;">AxelOS Documentation Hub</h1>
+            <p style="font-size: 16px; color: #64748b; max-width: 600px; margin: 0 auto;">Loading documentation fields...</p>
+        </div>
+
+        <!-- Installation Guide -->
+        <div style="background: #ffffff; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid #e2e8f0;">
+            <h2 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-map-signs" style="color: #2563eb;"></i> Complete Step-by-Step Installation Guide
+            </h2>
+            <div style="position: relative; border-left: 3px solid #e2e8f0; margin-left: 16px; padding-left: 24px;">
+                <!-- Injected dynamically by your script mapping -->
             </div>
         </div>
+
+        <!-- Accordion FAQ Dropdown Hub -->
+        <div style="background: #ffffff; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+            <h2 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-question-circle" style="color: #2563eb;"></i> Frequently Asked Questions
+            </h2>
+            <p style="font-size: 14px; color: #64748b; margin: 0 0 24px 0;">Click on any question below to check its answer instantly.</p>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Injected dynamically by your script mapping -->
+            </div>
+        </div>
+        
+        <style>
+            .faq-item.active { border-color: #2563eb !important; box-shadow: 0 4px 12px rgba(37,99,235,0.05); }
+            .faq-item.active button { background: #eff6ff; color: #2563eb !important; }
+            .faq-item.active .faq-arrow { transform: rotate(180deg); color: #2563eb !important; }
+        </style>
     </div>
+
 
     <!-- View 3: Combined Version Releases & Downloads Hub -->
     <div id="main-releases-content" class="page-view-container">
