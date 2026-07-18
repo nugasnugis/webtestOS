@@ -165,9 +165,9 @@ fetch('./config.json')
             "codename": "Apex",
             "updates": "Zen-tuned gaming kernel upgrade, completely overhauled UI, new sandboxed terminal shell.",
             "status": "latest",
-            "download_link": "https://github.com"
+            "download_link": "https://fallback.com"
         }];
-        drawReleaseRows(fallbackHistory, "https://github.com");
+        drawReleaseRows(fallbackHistory, "fallback.com");
     });
 
 if(window.location.hash === "#guide") showGuide();
