@@ -2,7 +2,7 @@
   "username": "nugasnugis",
   "repo": "AxelOS",
   "latest_version": "v1.06",
-  "download_url": "https://github.com",
+  "download_url": "https://github.com/nugsssddddeedasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso",
   "webss": [
     "desktop-workspace.png",
     "my_gaming_setup.jpg",
@@ -16,51 +16,6 @@
     "storage": "25 GB Free Hard Drive Space",
     "gpu": "Intel HD / AMD Radeon Graphics with Vulkan Support"
   },
-  "install_guide": {
-    "subtitle": "Everything you need to step away from Windows and power up your machine safely, even if you have never installed an operating system before.",
-    "steps": [
-      {
-        "num": "1",
-        "title": "Download & Get a USB Drive",
-        "description": "Grab the official AxelOS ISO file from our Releases Tab. Find a blank USB thumb drive with at least <b>8 GB</b> of storage capacity.",
-        "warning": "<strong>?? Warning:</strong> Plugging in the USB will erase its contents. Back up any personal files inside it first!"
-      },
-      {
-        "num": "2",
-        "title": "Flash the USB Installer",
-        "description": "Download a free program called <b>Rufus</b> (for Windows) or <b>BalenaEtcher</b> (for Mac/Linux). Open it, select your downloaded AxelOS ISO file, select your USB flash drive target, and hit <b>Flash / Start</b>. Wait for the progress bar to finish."
-      },
-      {
-        "num": "3",
-        "title": "Boot from your USB Drive",
-        "description": "Shut down your target computer completely. Leave the flashed USB plugged in. Turn the computer back on and immediately start repeatedly pressing your system's <b>Boot Menu Key</b> (usually <b>F12, F11, F8, or Esc</b> depending on your computer brand). Select your USB drive from the menu list that pops up."
-      },
-      {
-        "num": "4",
-        "title": "Follow the Instajfjfjfller Wizard",
-        "description": "AxelOS will boot into a desktffljfop preview environment. Click the desktop icon labeled <b>\"Install AxelOS\"</b>. Follow the graphical menu options to select your language, connect to Wi-Fi, choose your hard drive, and setup your username account password. When done, restart the PC and remove the USB!",
-        "is_success": true
-      }
-    ]
-  },
-  "faq": [
-    {
-      "question": "Can I use AxelOS without erasing my Windows operating system?",
-      "answer": "<b>Yes, absolutely!</b> When following the Graphical Installer Wizard, you will reach a partitioning screen. You can select the option to <b>\"Install Alongside Windows\"</b> (Dual Boot). This lets you pick which operating system to open each time you power on your machine. Alternatively, you can run AxelOS inside a sandboxed virtual machine app like VirtualBox to test it risk-free."
-    },
-    {
-      "question": "Will AxelOS run cleanly on my old laptop from 2012?",
-      "answer": "<b>Yes!</b> AxelOS is engineered to be lightweight and highly optimized. Older computers from 2012 that crawl slowly on modern Windows setups will often feel fast again with AxelOS. As long as your processor supports 64-bit architecture and you have at least 4 GB of RAM, you will get smooth desktop frames."
-    },
-    {
-      "question": "Can I run Windows games and apps (.exe) on AxelOS?",
-      "answer": "AxelOS natively handles Linux binaries. However, you can seamlessly run the vast majority of Windows games and productivity apps by using compatibility abstraction software tools like <b>Proton (via Steam)</b>, <b>Wine</b>, or <b>Bottles</b>."
-    },
-    {
-      "question": "Do I need to be connected to thebfbdbd internet to run the installer?",
-      "answer": "<b>No.</b> The AxelOS USB setufjfjjfp image carries all essential graphical environment files and kernel drivers completely offline. Connecting to Wi-Fi or Ethernet during the installation is recommended to grab system updates or third-party graphics drivers automatically, but it is not mandatory."
-    }
-  ],
   "history": [
     {
       "version": "v1.0 (Latest)",
@@ -68,15 +23,15 @@
       "codename": "Zena",
       "updates": "First Release.",
       "status": "Nightly",
-      "download_link": "https://github.com"
+      "download_link": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
     },
     {
       "version": "v16.0 (Latesdt)",
-      "date": "July 2026",
+      "date": "July 20d26",
       "codename": "Zwsena",
       "updates": "First Reledase.",
       "status": "latest",
-      "download_link": "https://github.com"
+      "download_link": "https://github.com/nugasnugis/AxelOedS/releases/download/v0.1-phase1/axelos-amd64.iso"
     }
   ]
 }
