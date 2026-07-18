@@ -35,6 +35,7 @@ if (document.getElementById('slider-track')) {
     document.getElementById('slider-track').addEventListener('touchstart', () => clearInterval(autoSwipeTimer));
     document.getElementById('slider-track').addEventListener('touchend', resetAutoSwipeTimer);
 }
+
 function toggleFaq(b) {
     const item = b.parentElement, panel = b.nextElementSibling, isOpening = !item.classList.contains('active');
     document.querySelectorAll('.faq-item').forEach(el => { 
@@ -59,7 +60,6 @@ function showHome(a = null) {
     if(a) { setTimeout(() => { const t = document.querySelector(a); if(t) t.scrollIntoView({ behavior: 'smooth' }); }, 50); } else { window.scrollTo({top:0}); }
     setTimeout(updateCarouselIndicators, 100);
 }
-
 function toggleTheme() {
     const b = document.body; b.classList.toggle('dark-mode');
     const icon = document.getElementById('theme-icon');
@@ -83,6 +83,7 @@ window.onscroll = function() {
 window.addEventListener("popstate", () => {
     if(window.location.hash === "#guide") showGuide(); else if(window.location.hash === "#releases") showReleases(); else showHome();
 });
+
 function drawReleaseRows(historyArray, customUrl) {
     const targetContainer = document.getElementById('history-rows');
     if (!targetContainer) return;
@@ -121,7 +122,6 @@ function drawReleaseRows(historyArray, customUrl) {
     }
     targetContainer.innerHTML = htmlOutput;
 }
-
 fetch('./config.json')
     .then(res => res.json())
     .then(data => {
@@ -147,12 +147,12 @@ fetch('./config.json')
             const sTitle = document.getElementById('screen-title'); if(sTitle) sTitle.innerText = cleanImageTitle(screenshots);
         }
 
-        // ? DYNAMICALLY BUILD INSTALL GUIDE FROM CONFIG.JSON
-        const guideSub = document.querySelector('#main-guide-content p');
-        if(guideSub && data.install_guide.subtitle) guideSub.innerText = data.install_guide.subtitle;
+        // ? MOUNT CONFIG GUIDE DATA VIA EXPLICIT ELEMENT ID
+        const guideSub = document.getElementById('guide-subtitle');
+        if(guideSub && data.install_guide && data.install_guide.subtitle) guideSub.innerText = data.install_guide.subtitle;
 
-        const timelineContainer = document.querySelector('#main-guide-content div[style*="border-left: 3px solid"]');
-        if(timelineContainer && data.install_guide.steps) {
+        const timelineContainer = document.getElementById('install-timeline');
+        if(timelineContainer && data.install_guide && data.install_guide.steps) {
             let guideHtml = '';
             data.install_guide.steps.forEach(step => {
                 let bgCircle = step.is_success ? '#10b981' : '#2563eb';
@@ -170,14 +170,14 @@ fetch('./config.json')
             timelineContainer.innerHTML = guideHtml;
         }
 
-        // ? DYNAMICALLY BUILD BEAUTIFUL FAQ ACCORDIONS FROM CONFIG.JSON
-        const faqContainer = document.querySelector('#main-guide-content div[style*="display: flex; flex-direction: column; gap: 12px"]');
+        // ? MOUNT CONFIG FAQ DATA VIA EXPLICIT ELEMENT ID
+        const faqContainer = document.getElementById('faq-accordion');
         if(faqContainer && data.faq) {
             faqContainer.innerHTML = '';
             data.faq.forEach(item => {
                 faqContainer.innerHTML += `
-                    <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s ease; overflow: hidden; background: #f8fafc;">
-                        <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: none; border: none; font-size: 15px; font-weight: 700; color: #1e293b; text-align: left; cursor: pointer; outline: none;">
+                    <div class="faq-item" style="border: 1px solid #e2e8f0; border-radius: 8px; transition: all 0.2s ease; overflow: hidden; background: #f8fafc; color: #1e293b !important; text-align: left;">
+                        <button onclick="toggleFaq(this)" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: none; border: none; font-size: 15px; font-weight: 700; color: inherit; text-align: left; cursor: pointer; outline: none;">
                             <span>${item.question}</span>
                             <i class="fas fa-chevron-down faq-arrow" style="font-size: 12px; color: #64748b; transition: transform 0.2s ease;"></i>
                         </button>
@@ -193,7 +193,7 @@ fetch('./config.json')
         if (data.history) { drawReleaseRows(data.history, data.download_url); }
         startAutoSwipe();
     })
-    .catch(err => console.error("Config processing tracker crash:", err));
+    .catch(err => console.error("Config tracking error log description:", err));
 
 if(window.location.hash === "#guide") showGuide();
 if(window.location.hash === "#releases") showReleases();
