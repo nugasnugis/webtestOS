@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AxelOS Hub</title>
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <link rel="stylesheet" href="style.css">
+    <title>AxelOS - Daily Driving, Gaming & Hacking Combined</title>
+    <!-- Multi-size Branding Favicon Configuration -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
-    <!-- ? NAVBAR WITH NO LANGUAGE DROPDOWN -->
     <nav>
         <div class="container nav-flex">
-            <div onclick="showHome()" class="logo-text" style="cursor:pointer;">AxelOS</div>
+            <div onclick="showHome()" class="logo-text">AxelOS</div>
             <div class="nav-links">
                 <a onclick="showHome('#features')">Features</a>
                 <a onclick="showHome('#about')">About</a>
@@ -26,106 +29,150 @@
         </div>
     </nav>
 
-    <!-- ? MAIN HOMEPAGE CONTENT -->
-    <div id="main-homepage-content" class="page-view-container">
-        <header class="hero-section" style="text-align: center; padding: 80px 24px; background: radial-gradient(circle at top, #f8fafc, #ffffff);">
-            <span id="tag-ver" style="background: #eff6ff; color: #2563eb; padding: 6px 14px; border-radius: 9999px; font-size: 13px; font-weight: 700; display: inline-block; margin-bottom: 16px;">Introducing AxelOS v1.10</span>
-            <h1 style="font-size: 48px; font-weight: 800; color: #0f172a; margin-bottom: 16px; letter-spacing: -1px;">The Future of Fast, Tuned Desktop Computing</h1>
-            <p style="font-size: 18px; color: #64748b; max-width: 600px; margin: 0 auto 32px auto; line-height: 1.6;">An elegant, performance-focused operating system meticulously crafted for developers, gamers, and systems power users.</p>
-            <button id="hero-dl-btn" class="main-dl-btn" style="background: #2563eb; color: white; border: none; padding: 14px 28px; font-size: 15px; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3); transition: transform 0.2s;">Download AxelOS</button>
+    <div id="scroll-top-arrow" onclick="window.scrollTo({top:0, behavior:'smooth'})">&uarr;</div>
+
+    <div id="main-homepage-content">
+        <header>
+            <span class="version-tag" id="tag-ver">Introducing AxelOS...</span>
+            <h1>The ultimate OS for <br><span>Daily Use, Gaming & Hacking</span>.</h1>
+            <p class="hero-p">Why compromise? AxelOS bridges the gap between a polished everyday desktop, extreme gaming performance, and a robust environment for security professionals.</p>
+            <div class="hero-btns" id="download">
+                <a id="hero-dl-btn" onclick="showReleases()" class="btn btn-lg main-dl-btn">Download AxelOS</a>
+                <a onclick="showGuide()" class="btn btn-lg btn-alt">Installation Guide</a>
+            </div>
+            <p class="meta-text">Free & Open Source ? 64-bit ISO (~2.1 GB)</p>
         </header>
 
-        <section class="slider-container" style="max-width: 1000px; margin: 0 auto 60px auto; padding: 0 24px; text-align: center;">
-            <div style="position: relative; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); background: #1e293b;">
-                <div id="slider-track" style="display: flex; overflow-x: scroll; scroll-snap-type: x mandatory; scrollbar-width: none;-ms-overflow-style: none;"></div>
-                <button onclick="slideCarousel(-1)" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"><i class="fas fa-chevron-left" style="color:#0f172a"></i></button>
-                <button onclick="slideCarousel(1)" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"><i class="fas fa-chevron-right" style="color:#0f172a"></i></button>
+        <div class="carousel-shell">
+            <button class="arrow-btn arrow-left" onclick="slideCarousel(-1)">&larr;</button>
+            <button class="arrow-btn arrow-right" onclick="slideCarousel(1)">&rarr;</button>
+            <div class="window-mockup">
+                <div class="window-bar">
+                    <div class="dot-group">
+                        <span class="dot" style="background:#ef4444;"></span>
+                        <span class="dot" style="background:#f59e0b;"></span>
+                        <span class="dot" style="background:#10b981;"></span>
+                    </div>
+                    <div class="window-title" id="screen-title">Loading Gallery...</div>
+                </div>
+                <div class="slider-viewport" id="slider-track"></div>
             </div>
-            <h3 id="screen-title" style="margin-top: 16px; font-size: 15px; color: #64748b; font-weight: 500;">Desktop Interface Preview</h3>
-            <div id="dots-container" style="display: flex; justify-content: center; gap: 8px; margin-top: 12px;"></div>
-        </section>
+            <div class="indicator-dots" id="dots-container"></div>
+        </div>
 
-        <section class="specs-section" style="background: #f8fafc; padding: 60px 24px; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
-            <div style="max-width: 900px; margin: 0 auto;">
-                <h2 style="font-size: 28px; font-weight: 800; color: #0f172a; text-align: center; margin-bottom: 32px;">System Hardware Requirements</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                    <div style="background: #ffffff; padding: 24px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center;">
-                        <i class="fas fa-microchip" style="font-size: 24px; color: #2563eb; margin-bottom: 12px;"></i>
-                        <h4 style="font-size: 14px; color: #64748b; margin-bottom: 6px;">Processor (CPU)</h4>
-                        <p id="spec-cpu" style="font-size: 15px; font-weight: 700; color: #0f172a; margin: 0;">Loading...</p>
+        <section class="features" id="features">
+            <div class="container">
+                <h2 class="section-title">AxelOS Core Features</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="icon-box icon-blue"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg></div>
+                        <h3>Seamless Daily Driving</h3>
+                        <p>A beautiful, lightweight user interface pre-packed with essential apps for web browsing, office productivity, and media consumption.</p>
                     </div>
-                    <div style="background: #ffffff; padding: 24px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center;">
-                        <i class="fas fa-memory" style="font-size: 24px; color: #2563eb; margin-bottom: 12px;"></i>
-                        <h4 style="font-size: 14px; color: #64748b; margin-bottom: 6px;">Memory (RAM)</h4>
-                        <p id="spec-ram" style="font-size: 15px; font-weight: 700; color: #0f172a; margin: 0;">Loading...</p>
+                    <div class="card">
+                        <div class="icon-box icon-emerald"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path></svg></div>
+                        <h3>Optimized for Gaming</h3>
+                        <p>Out-of-the-box support for Wine, Proton, and Steam. Custom kernel tweaks drastically reduce latency and maximize raw hardware FPS.</p>
                     </div>
-                    <div style="background: #ffffff; padding: 24px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center;">
-                        <i class="fas fa-hdd" style="font-size: 24px; color: #2563eb; margin-bottom: 12px;"></i>
-                        <h4 style="font-size: 14px; color: #64748b; margin-bottom: 6px;">Storage Capacity</h4>
-                        <p id="spec-storage" style="font-size: 15px; font-weight: 700; color: #0f172a; margin: 0;">Loading...</p>
-                    </div>
-                    <div style="background: #ffffff; padding: 24px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center;">
-                        <i class="fas fa-gamepad" style="font-size: 24px; color: #2563eb; margin-bottom: 12px;"></i>
-                        <h4 style="font-size: 14px; color: #64748b; margin-bottom: 6px;">Graphics Card (GPU)</h4>
-                        <p id="spec-gpu" style="font-size: 15px; font-weight: 700; color: #0f172a; margin: 0;">Loading...</p>
+                    <div class="card">
+                        <div class="icon-box icon-purple"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>
+                        <h3>Advanced Pentesting</h3>
+                        <p>Equipped with a secure, sandboxed command-line shell environment and loaded with popular open-source network and system auditing suites.</p>
                     </div>
                 </div>
             </div>
         </section>
-    </div>
-    <!-- ? FIXED TIMELINE & FAQ TARGET CONTAINER SECTIONS -->
-    <div id="main-guide-content" class="page-view-container" style="display: none; max-width: 900px; margin: 40px auto; padding: 24px; font-family: system-ui, -apple-system, sans-serif;">
-        <div style="text-align: center; margin-bottom: 48px;">
-            <h1 style="font-size: 36px; font-weight: 800; color: #0f172a; margin-bottom: 12px;">AxelOS Documentation Hub</h1>
-            <p id="guide-subtitle" style="font-size: 16px; color: #64748b; max-width: 600px; margin: 0 auto;">Loading documentation fields...</p>
-        </div>
+        <section class="about" id="about">
+            <div class="container">
+                <h2 class="section-title">About AxelOS</h2>
+                <p class="about-p">AxelOS started as a passion project to eliminate the need for computer enthusiasts to setup complicated dual-boots. By bundling standard daily desktop software, fine-tuned gaming runtime configurations, and top-tier security testing platforms natively into one distro, we provide a complete system built by power-users, for power-users.</p>
+            </div>
+        </section>
 
-        <div style="background: #ffffff; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 40px; border: 1px solid #e2e8f0;">
-            <h2 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
-                <i class="fas fa-map-signs" style="color: #2563eb;"></i> Complete Step-by-Step Installation Guide
-            </h2>
-            <!-- Fixed ID Hook for Guide Steps -->
-            <div id="install-timeline" style="position: relative; border-left: 3px solid #e2e8f0; margin-left: 16px; padding-left: 24px;"></div>
-        </div>
-
-        <div style="background: #ffffff; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
-            <h2 style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                <i class="fas fa-question-circle" style="color: #2563eb;"></i> Frequently Asked Questions
-            </h2>
-            <p style="font-size: 14px; color: #64748b; margin: 0 0 24px 0;">Click on any question below to check its answer instantly.</p>
-            <!-- Fixed ID Hook for Accordion Items -->
-            <div id="faq-accordion" style="display: flex; flex-direction: column; gap: 12px;"></div>
-        </div>
-        
-        <style>
-            .faq-item.active { border-color: #2563eb !important; box-shadow: 0 4px 12px rgba(37,99,235,0.05); }
-            .faq-item.active button { background: #eff6ff; color: #2563eb !important; }
-            .faq-item.active .faq-arrow { transform: rotate(180deg); color: #2563eb !important; }
-        </style>
+        <section class="specs-section">
+            <div class="container">
+                <h2 class="section-title">Minimum System Requirements</h2>
+                <div class="specs-list">
+                    <div class="spec-item"><div class="spec-label">Processor (CPU)</div><div class="spec-value" id="spec-cpu">Loading...</div></div>
+                    <div class="spec-item"><div class="spec-label">Memory (RAM)</div><div class="spec-value" id="spec-ram">Loading...</div></div>
+                    <div class="spec-item"><div class="spec-label">Storage Allocation</div><div class="spec-value" id="spec-storage">Loading...</div></div>
+                    <div class="spec-item"><div class="spec-label">Graphics (GPU)</div><div class="spec-value" id="spec-gpu">Loading...</div></div>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <!-- ? RELEASES HISTORY SECTION -->
-    <div id="main-releases-content" class="page-view-container" style="display: none; max-width: 1100px; margin: 40px auto; padding: 0 24px;">
-        <div style="background: #ffffff; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; overflow-x: auto;">
-            <h2 style="font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 24px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-history" style="color: #2563eb;"></i> Version History & ISO Downloads</h2>
-            <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 700px;">
-                <thead>
-                    <tr style="border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
-                        <th style="padding: 12px;">Build Version</th>
-                        <th style="padding: 12px;">Built At</th>
-                        <th style="padding: 12px;">Codename</th>
-                        <th style="padding: 12px; width: 35%;">Key Updates log</th>
-                        <th style="padding: 12px;">Status Type</th>
-                        <th style="padding: 12px; text-align: center;">Action Mirror</th>
-                    </tr>
-                </thead>
-                <tbody id="history-rows"></tbody>
-            </table>
+    <!-- View 2: Standalone Installation Guide -->
+    <div id="main-guide-content" class="page-view-container">
+        <div class="content-card-wrapper">
+            <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
+            <h1 style="margin-bottom: 24px;">Deployment & Installation Guide</h1>
+            <div class="step"><div class="step-num">Step 1</div><h3>Download Image</h3><p>Obtain the latest stable image and verify SHA256 checksums.</p></div>
+            <div class="step"><div class="step-num">Step 2</div><h3>Flash Target Media</h3><p>Use BalenaEtcher or Rufus to write the ISO to an 8GB+ USB drive.</p></div>
+            <div class="step"><div class="step-num">Step 3</div><h3>BIOS Setup</h3><p>Disable Secure Boot and assign USB storage priority rankings.</p></div>
+            <div class="step"><div class="step-num">Step 4</div><h3>Installation</h3><p>Boot from USB and follow the partitioning formatting disk setup wizard choices.</p></div>
+            
+            <div class="faq-section">
+                <h2 style="font-size:24px; font-weight:800; margin-bottom:28px; margin-top:50px; text-align:center;">Frequently Asked Questions</h2>
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Can I dual-boot AxelOS with Windows? <span class="faq-icon">+</span></button>
+                    <div class="faq-panel"><div class="faq-content">Yes! During Step 4 of the installation guide, select 'Install Alongside' to safely partition your drive without erasing your existing Windows data.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Are anti-cheat gaming systems supported? <span class="faq-icon">+</span></button>
+                    <div class="faq-panel"><div class="faq-content">AxelOS includes kernel-level driver compatibility loops for Proton. Games using Valve Easy Anti-Cheat (EAC) and BattlEye load natively out of the box.</div></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger" onclick="toggleFaq(this)">Is this OS safe for beginners to use daily? <span class="faq-icon">+</span></button>
+                    <div class="faq-panel"><div class="faq-content">Absolutely. While it contains powerful tools for hacking and optimization, the desktop interface behaves exactly like a standard, user-friendly operating system.</div></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="scroll-top-arrow" style="position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; background: #2563eb; color: white; border: none; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.3); z-index: 999;"><i class="fas fa-arrow-up"></i></button>
+    <!-- View 3: Combined Version Releases & Downloads Hub -->
+    <div id="main-releases-content" class="page-view-container">
+        <div class="content-card-wrapper" style="max-width: 100%; width: 100%;">
+            <div onclick="showHome()" class="back-link">&larr; Back to Home</div>
+            <h1>AxelOS Distribution Hub</h1>
+            <p style="color:#475569; margin-top:4px; margin-bottom:24px;">Track system build revisions, changelog patches, and download official mirror ISO files natively.</p>
+            <div class="table-wrapper" style="overflow-x: auto; background: transparent; border-radius: 12px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #e2e8f0;">
+                            <th style="padding: 16px 12px; font-weight: 600;">Version</th>
+                            <th style="padding: 16px 12px; font-weight: 600;">Built At</th>
+                            <th style="padding: 16px 12px; font-weight: 600;">Codename</th>
+                            <th style="padding: 16px 12px; font-weight: 600;">Key Updates / Changelog</th>
+                            <th style="padding: 16px 12px; font-weight: 600;">Status</th>
+                            <th style="padding: 16px 12px; font-weight: 600; text-align: center;">Download Link</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-rows"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <script src="script.js"></script>
+    <!-- Cleaner Footer (Wiped out gnrcounter popup box element completely) -->
+    <footer>
+        <div class="container footer-flex">
+            <div class="footer-left"><h4>AxelOS Project</h4><p>Independent community-driven Linux distribution.</p></div>
+            <div class="footer-links" style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+                <a href="https://google.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
+                    <img src="./icon/google.png" alt="Google" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>Google</span>
+                </a>
+                <a href="https://youtube.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
+                    <img src="./icon/youtube.png" alt="YouTube" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>YouTube</span>
+                </a>
+                <a href="https://github.com" target="_blank" style="display: flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none;">
+                    <img src="./icon/github.png" alt="GitHub" style="width: 16px; height: 16px; object-fit: contain; filter: opacity(0.85);"><span>GitHub</span>
+                </a>
+                <a href="http://dnsexit.com" target="_blank"><img src="http://dnsexit.com" border="0" alt="DNSExit Status"></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./script.js?v=9"></script>
 </body>
 </html>
