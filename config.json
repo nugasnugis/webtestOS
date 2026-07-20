@@ -1,7 +1,7 @@
 {
   "username": "nugasnugis",
   "repo": "AxelOS",
-  "latest_version": "v1.06",
+  "latest_version": "v1.0",
   "download_url": "https://github.com/nugsssddddeedasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso",
   "webss": [
     "desktop-workspace.png",
@@ -21,17 +21,9 @@
       "version": "v1.0 (Latest)",
       "date": "July 2026",
       "codename": "Zena",
-      "updates": "First Release.",
-      "status": "Nightly",
+      "updates": "First Release, not yet tested on real Laptop.",
+      "status": "Latest",
       "download_link": "https://github.com/nugasnugis/AxelOS/releases/download/v0.1-phase1/axelos-amd64.iso"
-    },
-    {
-      "version": "v16.0 (Latesdt)",
-      "date": "July 20d26",
-      "codename": "Zwsena",
-      "updates": "First Reledase.",
-      "status": "latest",
-      "download_link": "https://github.com/nugasnugis/AxelOedS/releases/download/v0.1-phase1/axelos-amd64.iso"
     }
   ]
 }
